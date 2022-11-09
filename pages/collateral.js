@@ -1,12 +1,16 @@
-// import styles from '../styles/'
+import styles from '../styles/collateral.module.css'
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Moralis from 'moralis';
 const { EvmChain } = require("@moralisweb3/evm-utils");
+import Nav from '../components/Nav'
 
 export default function Collateral() {
 
   const [nfts, setNfts] = useState([])
+  useEffect(() => {
+    fetch()
+  }, [])
 
   async function fetch() {
     await Moralis.start({
@@ -14,7 +18,7 @@ export default function Collateral() {
       // ...and any other configuration
     });
 
-    const address = "0x74ec10C6F04E327B483701413103217EC15ccb2d";
+    const address = "0x45609e1289a42216a90c9c3454D44b4915652e00";
     
     const chain = EvmChain.MUMBAI;
 
@@ -30,8 +34,9 @@ export default function Collateral() {
 
   function Card(prop) {
     return (
-        <div>
+        <div className={styles.card}>
           <img src={prop.uri} />
+          <button> Collateral </button>
         </div>
     )
 }
@@ -39,7 +44,8 @@ export default function Collateral() {
 
     return (
       <div>
-        <button onClick={fetch}>fetch</button>
+        <Nav />
+        <h2>Lock your Nfts and take 40% usdt</h2>
       <div>
           {nfts.map((nft, i) => (
               <Card

@@ -1,0 +1,9 @@
+
+.card {
+    width: 400px;
+    /* height: 800px; */
+}
+.card > img{
+    width: 100%; 
+    padding: 1rem;
+}
