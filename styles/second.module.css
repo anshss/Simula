@@ -1,0 +1,42 @@
+.main{
+    min-height:90vh;
+
+}
+.first{
+    min-height:45vh;
+    display: flex;
+    gap :2rem;
+    margin: 0 1.5rem 0 1.5rem;
+}
+
+.third{
+    display: flex;
+    margin: 0 1.5rem 0 1.5rem;
+    gap :2rem;
+
+    /* min-height:45vh;
+    margin: 0 35% 0 1.5rem; */
+}
+
+.title{
+    /* text-align: start;
+    margin:3rem 1.5rem 0 35%; */
+    font-size: 3rem;
+    
+    
+}
+.description{
+    font-size: 1.2rem;
+}
+
+.image img{
+    display: flex;
+    /* position: absolute; */
+    /* flex: 2; */
+    
+
+    /* justify-content: flex-end; */
+    width:350px;
+    height: 470px;
+    margin-top: 2rem;
+}

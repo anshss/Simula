@@ -1,0 +1,26 @@
+.nav {
+    height :10vh;
+    padding:10px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: sticky;
+    top :0px;
+    
+}
+
+.nav ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin-left:55rem ;
+}
+
+.nav ul li a{
+    margin: 5px 15px; 
+    font-size: 1.2rem;
+
+}
