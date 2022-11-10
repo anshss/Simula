@@ -1,7 +1,7 @@
 .nav {
     height :10vh;
     padding:10px;
-    background: #000;
+    background: rgb(0, 2, 26);
     color: #fff;
     display: flex;
     align-items: center;
@@ -9,6 +9,10 @@
     position: sticky;
     top :0px;
     
+    
+}
+.one:hover, .two:hover , .three:hover{
+    color:rgb(243, 61, 251);
 }
 
 .nav ul{
@@ -16,11 +20,20 @@
     justify-content: center;
     align-items: center;
     list-style: none;
-    margin-left:55rem ;
+    margin-left: 55rem;
 }
 
 .nav ul li a{
     margin: 5px 15px; 
-    font-size: 1.2rem;
+}
+.login{
+    padding: .5rem .8rem ;
+    margin-left: 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
 
+}
+.login:active{
+    background-color: rgb(41, 240, 95);
 }

@@ -1,5 +1,7 @@
 .main{
     min-height:90vh;
+    background-color: rgba(0, 0, 0, 0.863);
+    padding-bottom: 3rem;
 
 }
 .first{
@@ -17,16 +19,28 @@
     /* min-height:45vh;
     margin: 0 35% 0 1.5rem; */
 }
-
 .title{
+    /* margin:0; */
+    margin-bottom: 0rem;
+    color: rgb(255, 255, 255);
+}
+
+.title , .two{
     /* text-align: start;
     margin:3rem 1.5rem 0 35%; */
     font-size: 3rem;
-    
-    
 }
+
+
+.two{
+    color :rgb(236, 14, 181);
+    margin-top: -.3rem;
+    }
+
 .description{
     font-size: 1.2rem;
+    color :rgb(59, 177, 204);
+    margin-top: -.3rem;
 }
 
 .image img{

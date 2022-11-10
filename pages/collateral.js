@@ -57,9 +57,27 @@ export default function Collateral() {
 
   function Card(prop) {
     return (
-      <div className={styles.card}>
-        <img src={prop.uri} />
-        <button onClick={() => Collateral(prop)}> Collateral </button>
+        <div className={styles.card}>
+          <img src={prop.uri} />
+          <button> Collateral </button>
+        </div>
+    )
+}
+
+
+    return (
+      <div className={styles.container}>
+        <Nav />
+        <h2>Lock your Nfts and take 40% usdt</h2>
+      <div className={styles.images}>
+          {nfts.map((nft, i) => (
+              <Card
+              key={i}
+              uri={nft.token_uri}
+              tokenContract={nft.token_address}
+              tokenId={nft.token_id}
+              />
+          ))}
       </div>
     )
   }
