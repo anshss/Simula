@@ -5,16 +5,16 @@ export default function Second() {
     <div className={secondStyles.main}>
         <div className={secondStyles.first}>
              <div className={secondStyles.image}>
-                <img src="img1.jpg" alt="vrfnorn"/>
+                <img src="img5.jpg" alt="vrfnorn"/>
             </div>
             <div>
                 <h1 className={secondStyles.title}>
                     Lenders
                 </h1>
-                <h1 className={secondStyles.title}>
+                <h2 className={secondStyles.two}>
                     Receive wETH or DAI without selling your NFT
 
-                </h1>
+                </h2>
                 <p className={secondStyles.description}> 
                 List your NFT as collateral and get loan offers from our users. Once you accept an offer, you receive wETH or DAI liquidity from the lender's wallet into yours. Your NFT gets transferred into a double-audited escrow smart contract for the loan duration. Repay the loan before it expires, and you get your NFT back. If you default, the lender can foreclose and receive your NFT. There are no auto-liquidations on NFTfi.
 
@@ -27,12 +27,12 @@ export default function Second() {
         <div className={secondStyles.third}>
             <div>
                 <h1 className={secondStyles.title}>
-                    collateral
+                    Collateral
                 </h1>   
-                <h1 className={secondStyles.title}>
+                <h2 className={secondStyles.two}>
                     Receive wETH or DAI without selling your NFT
 
-                </h1>
+                </h2>
                 <p className={secondStyles.description}>                    
                 Browse over 150 NFT collections (including CryptoPunks, Bored Apes, Art Blocks, Mutant Apes, VeeFriends, Autoglyphs, and most other bluechips) and offer loans on the assets you’re happy to back.
 ‍

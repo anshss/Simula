@@ -4,16 +4,16 @@ const Nav = () => {
     return (
       <nav className={navStyles.nav}>
         <ul>
-            <li>
-                <Link href='/'>Lend</Link>
+            <li className={navStyles.one}>
+                <Link href='/lending'>Lend</Link>
             </li>
-            <li>
-                <Link href='/about'>Collateral</Link>
+            <li className={navStyles.two}>
+                <Link href='/collateral'>Collateral</Link>
             </li>
-            <li>
-                <Link href='/about'>Dao</Link>
+             <li className={navStyles.three}>
+                <Link href='/dao'>Dao</Link>
             </li>
-            <button>Login</button>
+            <button className={navStyles.login}>Login</button>
         </ul>
       </nav>
     )

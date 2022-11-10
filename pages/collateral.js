@@ -43,10 +43,10 @@ export default function Collateral() {
 
 
     return (
-      <div>
+      <div className={styles.container}>
         <Nav />
         <h2>Lock your Nfts and take 40% usdt</h2>
-      <div>
+      <div className={styles.images}>
           {nfts.map((nft, i) => (
               <Card
               key={i}

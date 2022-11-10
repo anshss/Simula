@@ -6,6 +6,15 @@
   flex-direction: column;
   /* justify-content: center;
   align-items: center; */
+  background-color: rgba(0, 0, 0, 0.863);
+}
+.section{
+  display: flex;
+}
+.image img{
+  margin-left: 18rem;
+  position: absolute;
+  
 }
 .title a ,
 .title span {
@@ -21,15 +30,18 @@
   
   .title {
     margin:0;
-    margin-left: 1.5rem;
+    margin-left: 5rem;
     line-height: 1.15;
     font-size: 4rem;
+    color:rgb(59, 177, 204) ;
   }
   
 .description {
-    margin: 4rem 50rem 0 5rem;
+    margin: 4rem 50rem 1rem 5rem;
     line-height: 1.5;
     font-size: 3rem;
+    color:rgb(236, 14, 181);
+    font-weight: 500;
   }
 
 .description {
@@ -43,11 +55,23 @@
 .description1{
   margin: 0 30rem 0 5rem;
   font-size: 2rem;
+  color:rgb(255, 255, 255);
   
 }
 .start{
-  padding: .8rem 1rem;
+  padding: 1rem 1.2rem;
   width:8rem;
-  margin-left: 15rem;
+  margin-left: 40rem;
   margin-top:1.5rem ;
+  cursor: pointer;
+  background-color: rgba(81, 164, 231, 0.712);
+  border-radius: 0.25rem;
+  border: none;
+  font-size: .97rem;
+  color:white;
+}
+
+.start:hover{
+  /* color:rgb(243, 61, 251); */
+  background-color: rgba(125, 185, 235, 0.712);
 }
