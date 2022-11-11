@@ -22,7 +22,8 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    /* color: white; */
+    /* background: black; */
+    /* background-color: rgba(0, 0, 0, 0.863); */
   }
 }

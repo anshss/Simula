@@ -24,16 +24,18 @@
 }
 
 .nav ul li a{
-    margin: 5px 15px; 
+    margin: 5px 30px; 
 }
 .login{
-    padding: .5rem .8rem ;
+    padding: 0rem 1.8rem ;
     margin-left: 1rem;
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
+    background-color: #fff;
+    color: #000;
 
 }
-.login:active{
+.login:hover{
     background-color: rgb(41, 240, 95);
 }

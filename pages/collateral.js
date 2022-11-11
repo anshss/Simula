@@ -64,38 +64,20 @@ export default function Collateral() {
     )
 }
 
-
-    return (
-      <div className={styles.container}>
-        <Nav />
-        <h2>Lock your Nfts and take 40% usdt</h2>
-      <div className={styles.images}>
-          {nfts.map((nft, i) => (
-              <Card
-              key={i}
-              uri={nft.token_uri}
-              tokenContract={nft.token_address}
-              tokenId={nft.token_id}
-              />
-          ))}
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <Nav />
-      <h2>Lock your Nfts and take 40% usdt</h2>
-      <div>
-        {nfts.map((nft, i) => (
+return (
+  <div className={styles.container}>
+    <Nav />
+    <h2>Lend your Nfts at 7%</h2>
+  <div className={styles.images}>
+      {nfts.map((nft, i) => (
           <Card
-            key={i}
-            uri={nft.token_uri}
-            tokenContract={nft.token_address}
-            tokenId={nft.token_id}
+          key={i}
+          uri={nft.token_uri}
+          tokenContract={nft.token_address}
+          tokenId={nft.token_id}
           />
-        ))}
-      </div>
-    </div>
-  )
+      ))}
+  </div>
+</div>
+)
 }

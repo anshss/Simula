@@ -1,9 +1,11 @@
 import footerStyles from '../styles/footer.module.css'
+import Link from 'next/link'
 
 export default function footer() {
   return (
     <div className={footerStyles.main}>
-        footer
+        <h1>Simulaa</h1>
+        <Link href='/https://github.com/anshss/Defining-Defi'><h4>View Code</h4></Link>
     </div>
   )
 }

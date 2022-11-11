@@ -31,7 +31,7 @@ function SignIn() {
         const signature = await signMessageAsync({ message });
 
         // redirect user after success authentication to '/user' page
-        const { url } = await signIn('credentials', { message, signature, redirect: false, callbackUrl: '/user' });
+        const { url } = await signIn('credentials', { message, signature, redirect: false });
         /**
          * instead of using signIn(..., redirect: "/user")
          * we get the url from callback and push it to the router to avoid page refreshing
@@ -41,8 +41,7 @@ function SignIn() {
 
     return (
         <div>
-            <h3>Web3 Authentication</h3>
-            <button onClick={() => handleAuth()}>Authenticate via Metamask</button>
+            <p onClick={() => handleAuth()}>Sign-in</p>
         </div>
     );
 }
