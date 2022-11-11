@@ -6,6 +6,11 @@ const Nav = () => {
     return (
       <nav className={navStyles.nav}>
         <ul>
+            <li>
+                <Link href='/'><h2>Simulaa</h2></Link>
+            </li>
+        </ul>
+        <ul>
             <li className={navStyles.one}>
                 <Link href='/lending'>Lend</Link>
             </li>
@@ -14,6 +19,9 @@ const Nav = () => {
             </li>
              <li className={navStyles.three}>
                 <Link href='/dao'>Dao</Link>
+            </li>
+            <li className={navStyles.three}>
+                <Link href='/dashboard'>Dashboard</Link>
             </li>
             <button className={navStyles.login}><SignIn /></button>
             

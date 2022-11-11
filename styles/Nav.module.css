@@ -1,11 +1,12 @@
 .nav {
     height :10vh;
-    padding:10px;
+    /* padding:10px; */
     background: rgb(0, 2, 26);
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    gap: 40rem;
     position: sticky;
     top :0px;
     
@@ -20,7 +21,6 @@
     justify-content: center;
     align-items: center;
     list-style: none;
-    margin-left: 55rem;
 }
 
 .nav ul li a{

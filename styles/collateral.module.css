@@ -5,10 +5,10 @@
 
 .container > h2 {
     margin-left:2.5rem ;
+    padding-bottom: 1rem;
     font-size:2rem ;
     font-weight: 500;
-    color :rgb(236, 14, 181)
-    
+    color :rgb(236, 14, 181);
 }
 .card {
     width: 400px;
