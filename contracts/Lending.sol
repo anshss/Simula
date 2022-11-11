@@ -38,6 +38,7 @@ contract Lending is ERC721Holder {
     event claimed(address owner, uint256 amount);
 
     mapping (address => Stake) public userToStake;
+    mapping (address => bool) public hasClaimed;
 
 
     function stake(address _contract, uint256 _tokenId, uint256 _value, uint _term) public {
@@ -62,9 +63,11 @@ contract Lending is ERC721Holder {
     }
 
     function claim() private {
+        require(!hasClaimed[msg.sender]);
         Stake memory crtStake = userToStake[msg.sender];
         uint256 earned = (7 * crtStake.value) / 100;
         funds.transferFunds(msg.sender, earned);
+        hasClaimed[msg.sender] = true;
         emit claimed(msg.sender, earned);
     }
 

@@ -5,7 +5,7 @@ export default function footer() {
   return (
     <div className={footerStyles.main}>
         <h1>Simulaa</h1>
-        <Link href='/https://github.com/anshss/Defining-Defi'><h4>View Code</h4></Link>
+        <Link href='/https://github.com/anshss/Defining-Defi'><h4 className={footerStyles.heading}>View Code</h4></Link>
     </div>
   )
 }

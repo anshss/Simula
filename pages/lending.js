@@ -11,6 +11,7 @@ import { ethers } from 'ethers'
 export default function Collateral() {
   const contractAddress = '0xB86bd49525ccCFdC2e37e483df033172daD3b4c3'
   const [nfts, setNfts] = useState([])
+  const [data, setData] = useState({ value: '', term: '' })
 
   useEffect(() => {
     fetch()
@@ -83,12 +84,28 @@ export default function Collateral() {
 
   function Card(prop) {
     return (
-        <div className={styles.card}>
-          <img src={prop.uri} />
-          <button onClick={() => Collateral(prop)}> Lending </button>
+      <div className={styles.card}>
+        <img src={prop.uri} />
+        <div className={styles.inpbutton}>
+          <input
+            name="value"
+            placeholder="Value"
+            required
+            onChange={(e) => setData({ ...data, value: e.target.value })}
+          />
+          <input
+            name="term"
+            placeholder="Term (weeks)"
+            required
+            onChange={(e) => setData({ ...data, term: e.target.value })}
+          />
         </div>
+        <button className={styles.cltrlbutton} onClick={() => Collateral(prop)}>
+          Lending
+        </button>
+      </div>
     )
-}
+  }
 
 return (
   <div className={styles.container}>

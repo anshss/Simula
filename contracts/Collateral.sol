@@ -34,6 +34,7 @@ contract Collateral is ERC721Holder {
     event claimed(address owner, uint256 amount);
 
     mapping (address => Stake) public userToStake;
+    mapping (address => bool) public hasClaimed;
 
 
     function deposit(address _contract, uint256 _tokenId, uint256 _value, uint256 _term) public {
@@ -49,7 +50,9 @@ contract Collateral is ERC721Holder {
     }
 
     function claim() public {
+        require(!hasClaimed[msg.sender]);
         funds.transferFunds(msg.sender, userToStake[msg.sender].value);
+        hasClaimed[msg.sender] = true;
         emit claimed(msg.sender, userToStake[msg.sender].value);
     }
 

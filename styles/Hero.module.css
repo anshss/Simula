@@ -68,18 +68,22 @@
 }
 .start{
   padding: 0.8rem 1.5rem;
-  width:8rem;
+  width:10rem;
   margin-left: 40rem;
   margin-top: 4rem ;
   cursor: pointer;
-  background-color: rgba(81, 164, 231, 0.712);
+  background-color: rgb(236, 14, 181);
   border-radius: 0.25rem;
   border: none;
-  font-size: .97rem;
+  font-size: 1.1rem;
   color:white;
+  font-weight: 500;
+  transition: 0.5s;
+
 }
 
 .start:hover{
   /* color:rgb(243, 61, 251); */
-  background-color: rgba(125, 185, 235, 0.712);
+  background-color:rgb(236, 14, 181) ;
+  color: white;
 }

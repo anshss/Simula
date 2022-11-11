@@ -13,16 +13,15 @@ export default function Second() {
             Receive wETH or DAI without selling your NFT
           </h2>
           <p className={secondStyles.description}>
-            List your NFT as collateral and get loan offers from our users. Once
-            you accept an offer, you receive wETH or DAI liquidity from the
-            lender's wallet into yours. Your NFT gets transferred into a
-            double-audited escrow smart contract for the loan duration. Repay
-            the loan before it expires, and you get your NFT back. If you
-            default, the lender can foreclose and receive your NFT. There are no
-            auto-liquidations on NFTfi. Yes, unlocking value from your NFT is
-            that simple. What are you going to use the liquidity for? Earning
-            yield on a money market? Completing your NFT collection? Treating
-            yourself IRL?
+            Lend us your owned NFT and receive a regular monthly 4% to 7%
+            interest. Once you hit the button, your NFT gets transferred into a
+            smart contract. A DAO will now be able to access your NFT. It will
+            be performing some businesses like renting your NFT to an exhibition
+            or a user and yielding interest in it. It will cover the 7% provided
+            to you and eventually try to earn more than that. The extra earnings
+            of DAO will be divided among its members. A user can become a DAO
+            member by stake 5 Matic. After your Lending duration expires, your
+            NFT will be returned to you.
           </p>
         </div>
       </div>
@@ -33,14 +32,14 @@ export default function Second() {
             Receive wETH or DAI without selling your NFT
           </h2>
           <p className={secondStyles.description}>
-            Browse over 150 NFT collections (including CryptoPunks, Bored Apes,
-            Art Blocks, Mutant Apes, VeeFriends, Autoglyphs, and most other
-            bluechips) and offer loans on the assets you’re happy to back. ‍
-            Best case, you earn a juicy APR. "Worst case", the borrower defaults
-            and you walk away with an NFT at a hefty discount. Some lenders even
-            specialize in "loan-to-own" strategies. No matter if you loan to
-            earn or loan to own, make sure you connect to the NFTfi expert
-            lender community and deeply understand the NFTs you lend against.
+            List your NFT as collateral and get a loan up to 40% of NFT value
+            from us in USDT. Once you hit the button, your NFT gets transferred
+            into a escrow smart contract for the loan duration. Repay the loan
+            after the duration with 4% interest in a duration of 1 month. If you
+            default, our Dao can foreclose your NFT. Collateral duration can
+            vary between 1 month to 4 months. This time period is decided to
+            avoid NFT fluctuations. For the same reason, the amount is given in
+            USDT.
           </p>
         </div>
         <div className={secondStyles.image}>

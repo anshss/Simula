@@ -1,5 +1,5 @@
 // import { contractAddress } from "../address/Collateral.js"
-import styles from '../styles/collateral.module.css'; 
+import styles from '../styles/dashboard.module.css'; 
 import CollateralContractAbi from "../artifacts/contracts/Collateral.sol/Collateral.json";
 import LendingContractAbi from "../artifacts/contracts/Lending.sol/Lending.json";
 import web3modal from "web3modal"; 
@@ -79,11 +79,16 @@ export default function Dashboard() {
 
     function CardCollateral() {
         return (
-            <div className={styles.card}>
-                <img src={uri.collateral} />
-                <button onClick={claimCollateral}> Claim </button>
-                <button onClick={unstakeCollateral}> Unstake </button>
-            </div>
+                <div className={styles.col}>
+                    <div className={styles.card}>
+                        <img src={uri.collateral} />
+                        <div className={styles.bb}>
+                            {claimed ? <button onClick={claimCollateral} disabled> Claimed </button> : 
+                        <button onClick={claimCollateral}> Claim </button>}
+                        <button onClick={unstakeCollateral}> Unstake </button>
+                        </div>
+                    </div>
+                </div>
         )
     }
 
@@ -95,7 +100,7 @@ export default function Dashboard() {
         setClaimed(true)
     }
 
-    const tokenAddress = "0x75AD3a6F05f4Af07803C4fC83ddB9cB5D721bA05"
+    const tokenAddress = "0x75AD3a6F05f4Af07803C4fC83ddB9cB5D721bA05" //usdt
     const approveAbi = [
         {
             "inputs": [
@@ -126,8 +131,7 @@ export default function Dashboard() {
     async function unstakeCollateral() {
         const signer = await getSignerOrProvider(true)
         const tokenContract = new ethers.Contract(tokenAddress, approveAbi, signer)
-        const value = '1'
-        const parseValue = ethers.utils.parseUnits(value, "ether");
+        const parseValue = ethers.utils.parseUnits('1', "ether");
         const approve = tokenContract.approve(CollateralContract, parseValue)
         const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, signer)
         const txn = await contract.unstake()
@@ -153,11 +157,16 @@ export default function Dashboard() {
 
     function CardLending() {
         return (
-            <div className={styles.card}>
-                <img src={uri.collateral} />
-                <button onClick={claimLending}> Claim </button>
-                <button onClick={unstakeLending}> Unstake </button>
-            </div>
+                <div className={styles.len}> 
+                    <div className={styles.card}>
+                        <img src={uri.collateral} />
+                        <div className={styles.bb}>
+                            {claimed ? <button onClick={claimLending} disabled> Claimed </button> : 
+                            <button onClick={claimLending}> Claim </button>}
+                            <button onClick={unstakeLending}> Unstake </button>
+                        </div>
+                    </div>
+                </div>
         )
     }
 
@@ -179,10 +188,17 @@ export default function Dashboard() {
     return (
         <div>
             <Nav />
-            <div>Collateral</div>
-            <CardCollateral />
-            <div>Lending</div>
-            <CardLending />
+            <div className={styles.container}>
+                <div>
+                    <h2 className={styles.heading}>Collateral</h2>
+                    <CardCollateral/>
+                </div>
+                <div>
+                    <h2 className={styles.heading}>Lending</h2>
+                    <CardLending/>
+                </div>
+            </div>
         </div>
     )
 }
+

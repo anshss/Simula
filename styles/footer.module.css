@@ -6,3 +6,7 @@
     justify-content: center;
     gap: 20rem;
 }
+
+.heading:hover {
+    color: rgb(236, 14, 181);
+}

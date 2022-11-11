@@ -18,7 +18,7 @@ const Nav = () => {
                 <Link href='/collateral'>Collateral</Link>
             </li>
              <li className={navStyles.three}>
-                <Link href='/dao'>Dao</Link>
+                <Link href='/dao'>DAO</Link>
             </li>
             <li className={navStyles.three}>
                 <Link href='/dashboard'>Dashboard</Link>

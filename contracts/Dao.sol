@@ -55,7 +55,6 @@ contract Dao is Ownable{
         delete member;
     }
 
-
     modifier onlyDaoMember {
         require(!daoMember[msg.sender].isMember);
         _;
