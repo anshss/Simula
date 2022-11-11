@@ -10,7 +10,7 @@ export default function Second() {
         <div>
           <h1 className={secondStyles.title}>Lenders</h1>
           <h2 className={secondStyles.two}>
-            Receive wETH or DAI without selling your NFT
+            Get regular interest on your NFT
           </h2>
           <p className={secondStyles.description}>
             Lend us your owned NFT and receive a regular monthly 4% to 7%
@@ -29,7 +29,7 @@ export default function Second() {
         <div>
           <h1 className={secondStyles.title}>Collateral</h1>
           <h2 className={secondStyles.two}>
-            Receive wETH or DAI without selling your NFT
+            Deposit NFT to take some USDT
           </h2>
           <p className={secondStyles.description}>
             List your NFT as collateral and get a loan up to 40% of NFT value

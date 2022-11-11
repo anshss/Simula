@@ -35,7 +35,7 @@ contract CollateralFunds is Ownable{
     }
 
     function returnFunds(address user) public payable {
-        uint256 withInterest = 0.04 ether * userToPaid[user] + userToPaid[user]; //4% interest
+        uint256 withInterest = (4 * userToPaid[user])/100 + userToPaid[user]; //4% interest
         require(usdt.balanceOf(address(this)) >= withInterest, "contract does not hold enough funds");
         usdt.transferFrom(msg.sender, address(this), withInterest); //trasnfers usdt from user to contract
     }

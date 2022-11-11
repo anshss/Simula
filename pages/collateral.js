@@ -10,10 +10,13 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 
 export default function Collateral() {
-  const contractAddress = '0x73A604e60d98775a90CB0ca1F229e0DA96E7D83C'
+  const contractAddress = '0x68865C713E7b107B25A72D5fc4714683bFb282FC'
 
   const [nfts, setNfts] = useState([])
-  const [dataInput, setData] = useState({ value: "4", term: "2" })
+  const [dataInput, setData] = useState({ 
+    value: "4", 
+    term: "5" 
+  })
 
   useEffect(() => {
     fetchAccount().then((user) => fetch(user))
@@ -89,7 +92,8 @@ export default function Collateral() {
       signer,
     )
     const txn = await nftcontract.approve(contractAddress, prop.tokenId)
-    const parseValue = ethers.utils.parseUnits(dataInput.value, 'ether')
+    const valueString = dataInput.value
+    const parseValue = ethers.utils.parseUnits(valueString, 'ether')
     const contract = new ethers.Contract(
       contractAddress,
       contractAbi.abi,
@@ -115,13 +119,13 @@ export default function Collateral() {
             name="Value"
             placeholder="Value"
             required
-            onChange={(e) => setData({ ...dataInput, value: e.target.value })}
+            onChange={(e) => setData({ ...dataInput, value: e.target.value,})}
           />
           <input
             name="Term"
             placeholder="Term (weeks)"
             required
-            onChange={(e) => setData({ ...dataInput, term: e.target.value })}
+            onChange={(e) => setData({ ...dataInput, term: e.target.value, })}
           />
         </div>
         <button className={styles.cltrlbutton} onClick={() => Collateral(prop)}>
