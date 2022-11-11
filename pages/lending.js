@@ -8,8 +8,8 @@ import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 
-export default function Collateral() {
-  const contractAddress = '0xB86bd49525ccCFdC2e37e483df033172daD3b4c3'
+export default function Lending() {
+  const contractAddress = '0x114B55744c7b88F6af2606284b051C6Ec9B778e4'
   const [nfts, setNfts] = useState([])
   const [data, setData] = useState({ value: '', term: '' })
 

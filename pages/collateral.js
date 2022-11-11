@@ -10,7 +10,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 
 export default function Collateral() {
-  const contractAddress = '0xB86bd49525ccCFdC2e37e483df033172daD3b4c3'
+  const contractAddress = '0x73A604e60d98775a90CB0ca1F229e0DA96E7D83C'
 
   const [nfts, setNfts] = useState([])
   const [dataInput, setData] = useState({ value: "4", term: "2" })

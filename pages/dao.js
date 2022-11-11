@@ -8,7 +8,7 @@ import Nav from "../components/Nav"
 
 export default function Dao() {
 
-    const DaoContract = "0xE8F102942C68BBf593FCCD15423595D6a293e9f5"
+    const DaoContract = "0x665b75D5B4D700394194B853df346dDd701416aD"
 
     useEffect(() => {
         // fetchAllProposal()
