@@ -12,7 +12,7 @@ import axios from 'axios'
 export default function Lending() {
   const contractAddress = '0x114B55744c7b88F6af2606284b051C6Ec9B778e4'
   const [nfts, setNfts] = useState([])
-  const [data, setData] = useState({ value: '', term: '' })
+  const [dataInput, setData] = useState({ value: "", term: "" })
 
   useEffect(() => {
     fetchAccount().then((user) => fetch(user))
@@ -102,6 +102,8 @@ export default function Lending() {
     fetch()
   }
 
+  console.log("Input data is", dataInput);
+
   function Card(prop) {
     return (
       <div className={styles.card}>
@@ -111,13 +113,15 @@ export default function Lending() {
             name="value"
             placeholder="Value"
             required
-            onChange={(e) => setData({ ...data, value: e.target.value })}
+            value={dataInput.value}
+            onChange={(e) => setData({ ...dataInput, value: e.target.value })}
           />
           <input
             name="term"
             placeholder="Term (weeks)"
             required
-            onChange={(e) => setData({ ...data, term: e.target.value })}
+            value={dataInput.term}
+            onChange={(e) => setData({ ...dataInput, term: e.target.value })}
           />
         </div>
         <button className={styles.cltrlbutton} onClick={() => Collateral(prop)}>

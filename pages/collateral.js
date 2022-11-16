@@ -8,15 +8,19 @@ import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
+import next from 'next'
+import { useRouter } from 'next/router'
 
 export default function Collateral() {
-  const contractAddress = '0x68865C713E7b107B25A72D5fc4714683bFb282FC'
+  const contractAddress = "0x5d5B63B926fD5767C3b4a53CF12C09907a6A7dF2"
 
   const [nfts, setNfts] = useState([])
   const [dataInput, setData] = useState({ 
-    value: "4", 
-    term: "5" 
+    value: "", 
+    term: "" 
   })
+
+  const router = useRouter()
 
   useEffect(() => {
     fetchAccount().then((user) => fetch(user))
@@ -91,23 +95,24 @@ export default function Collateral() {
       nftabi,
       signer,
     )
-    const txn = await nftcontract.approve(contractAddress, prop.tokenId)
+    const approve = await nftcontract.approve(contractAddress, prop.tokenId)
     const valueString = dataInput.value
-    const parseValue = ethers.utils.parseUnits(valueString, 'ether')
+    const parseValue = ethers.utils.parseUnits(valueString , 'ether')
     const contract = new ethers.Contract(
       contractAddress,
       contractAbi.abi,
       signer,
     )
-    const data = await contract.deposit(
+    const txn = await contract.deposit(
       prop.tokenContract,
       prop.tokenId,
       parseValue,
       dataInput.term,
     )
+    await approve.wait()
     await txn.wait()
-    await data.wait()
-    fetch()
+    router.push("/dashboard")
+    // fetch()
   }
 
   function Card(prop) {
@@ -119,12 +124,14 @@ export default function Collateral() {
             name="Value"
             placeholder="Value"
             required
+            value={dataInput.value}
             onChange={(e) => setData({ ...dataInput, value: e.target.value,})}
           />
           <input
             name="Term"
             placeholder="Term (weeks)"
             required
+            value={dataInput.term}
             onChange={(e) => setData({ ...dataInput, term: e.target.value, })}
           />
         </div>

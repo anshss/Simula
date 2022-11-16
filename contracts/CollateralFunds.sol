@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
+
+
 contract CollateralFunds is Ownable{
 
     AggregatorV3Interface internal priceFeed;
@@ -18,7 +20,7 @@ contract CollateralFunds is Ownable{
         return price;
     }
 
-   IERC20 usdt = IERC20(0x75AD3a6F05f4Af07803C4fC83ddB9cB5D721bA05); //usdt contract
+   IERC20 usdt = IERC20(0xFA31614f5F776eDD6f72Bc00BdEb22Bd4A59A7Db); //usdt contract
 
     mapping (address => bool) public controller;
     mapping (address => uint256) public userToPaid;
@@ -29,15 +31,17 @@ contract CollateralFunds is Ownable{
         uint256 chainlinkDecimals = 10 ** 10;
         uint256 PriceInUsdt = uint256(getLatestPrice()) * chainlinkDecimals; //chainlink fetches native/usdt price
         uint256 usdtAmount = (releaseAmount * PriceInUsdt) / 10**18;
-        usdt.approve(address(this), amount);
+        usdt.approve(address(this), usdtAmount);
         usdt.transferFrom(address(this), user, usdtAmount); //transfers usdt from contract to user
         userToPaid[user] = usdtAmount;
     }
 
     function returnFunds(address user) public payable {
         uint256 withInterest = (4 * userToPaid[user])/100 + userToPaid[user]; //4% interest
+        usdt.approve(user, withInterest);
         require(usdt.balanceOf(address(this)) >= withInterest, "contract does not hold enough funds");
-        usdt.transferFrom(msg.sender, address(this), withInterest); //trasnfers usdt from user to contract
+        usdt.transferFrom(user, address(this), withInterest); //trasnfers usdt from user to contract
+        delete userToPaid[user];
     }
 
     function usdtBalance() public view returns (uint256) {

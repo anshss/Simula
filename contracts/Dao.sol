@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract Dao is Ownable{
 
+
     address lendingContract;
 
     constructor(address _lendingContract) {
@@ -54,6 +55,7 @@ contract Dao is Ownable{
         payable(member._address).transfer(joinStake);
         delete member;
     }
+
 
     modifier onlyDaoMember {
         require(!daoMember[msg.sender].isMember);

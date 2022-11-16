@@ -67,5 +67,5 @@ gap :6px;
     text-align: center;
 }
 .inpbutton > input[type=text]:focus {
-    border: 3px solid rgb(59, 177, 204);
+    /* border: 3px solid rgb(59, 177, 204); */
 }
