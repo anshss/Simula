@@ -1,13 +1,10 @@
 .main {
   min-height: 110vh;
-  padding: 4rem 0;
-  /* flex: 1; */
   gap: 5rem;
   display: flex;
   flex-direction: row;
-  /* justify-content: center;
-  align-items: center; */
-  /* background-color: rgba(0, 0, 0, 0.863); */
+  padding-top: 6rem;
+  padding-bottom: 2rem;
 }
 
 .text {
@@ -39,6 +36,7 @@
   .title {
     margin:0;
     margin-left: 5rem;
+    font-size: 150%;
     line-height: 1.15;
     font-size: 4rem;
     color:rgb(59, 177, 204) ;
@@ -70,7 +68,7 @@
   padding: 0.8rem 1.5rem;
   width:10rem;
   margin-left: 40rem;
-  margin-top: 4rem ;
+  margin-top: 6rem ;
   cursor: pointer;
   background-color: rgb(236, 14, 181);
   border-radius: 0.25rem;

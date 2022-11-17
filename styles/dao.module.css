@@ -1,18 +1,26 @@
 .container{
-    min-height: 100vh;
+    min-height: 90vh;
     background-color: rgba(26, 25, 25, 0.863);
     display: flex;
+    justify-content: space-around;
+}
+
+.btndiv {
+    display: flex;
+    justify-content: space-around;
+    width: 30rem;
 }
 
 .btn{
     padding: 1rem 2rem ;
-    margin:5rem 0 5rem 5rem;
+    margin:5rem 0rem 5rem -2rem;
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
     background-color:rgb(59, 177, 204) ;
     color: #000;
 }
+
 .btn:hover{
     background-color:rgb(210, 245, 253);
 }
@@ -21,7 +29,7 @@
     display: flex;
     flex-direction: column;
     width: 20rem;
-    margin-left: 5rem;
+    /* margin-left: 5rem; */
 }
 .in > input{
     height: 3.5rem;
@@ -37,7 +45,7 @@
 }
 .in > input::placeholder{
     /* margin-left: 2rem; */
-    padding-left: 2rem;
+    /* padding-left: 2rem; */
     color: rgba(57, 56, 56, 0.818);
     text-align: center;
 }
@@ -59,4 +67,38 @@
 
 /* ---------- */
 
+.card {
+    width: 32rem;
+    display: flex;
+    /* justify-content: flex-end; */
+    align-items: flex-start;
+    /* align-content: flex-start; */
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.subdiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    border: 1px solid rgb(59, 177, 204);
+    border-radius: 0.5rem;
+}
+
+.cardbtns {
+    display: flex;
+    justify-content: space-around;
+    width: 30rem;
+}
+
+.cardbtn {
+    padding: 1rem 2rem ;
+    margin: 1.5rem 0rem 0rem 0rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    background-color:rgb(59, 177, 204) ;
+    color: #000;
+}
 

@@ -10,7 +10,7 @@ import Nav from "../components/Nav"
 export default function Dao() {
 
     const DaoContract = "0xE335FCd03D0917dA02062C814F647763943D1918"
-    const LendingContract = "0x19690Bc3578270654cD89D65cb2779Cf51779C56"
+    const LendingContract = "0xF8d68cE9910D3217cF74e70B2B62FE4cCE260285"
 
     useEffect(() => {
         fetchAllProposal()
@@ -112,18 +112,32 @@ export default function Dao() {
 
     function ProposalCard(prop) {
         return (
-            <div className={styles.col}>
-                <div className={styles.card}>
-                    {/* <img src={uri} /> */}
-                    <div className={styles.bb}>
-                        <h4>{prop.tokenContract}</h4>
-                        <h4>{prop.tokenId}</h4>
-                        <button onClick={executeProposal}> Execute </button>
+            <div className={styles.card}>
+                {/* <img src={uri} /> */}
+                <div className={styles.subdiv}>
+                    <h4>address: {prop.tokenContract}</h4>
+                    <h4>tokenId: {prop.tokenId}</h4>
+                    <div className={styles.cardbtns}>
+                        <button onClick={styles.yay} className={styles.cardbtn}> yay </button>
+                        <button onClick={styles.nay} className={styles.cardbtn}> nay </button>
+                        <button onClick={executeProposal} className={styles.cardbtn}> Execute </button>
                     </div>
+                </div>
+            </div>
+        )}
+
+    function NftCard(prop) {
+        return (
+            <div className={styles.card}>
+                {/* <img src={uri} /> */}
+                <div className={styles.subdiv}>
+                    <h4>address: {prop.tokenContract}</h4>
+                    <h4>tokenId: {prop.tokenId}</h4>
                 </div>
             </div>
         )
     }
+
 
     function renderProposal() {
         return(
@@ -141,18 +155,6 @@ export default function Dao() {
                 />
             ))}
             </>
-        )
-    }
-
-    function NftCard(prop) {
-        return (
-            <div className={styles.card}>
-                {/* <img src={uri} /> */}
-                <div className={styles.bb}>
-                    <h4>{prop.tokenContract}</h4>
-                    <h4>{prop.tokenId}</h4>
-                </div>
-            </div>
         )
     }
 
@@ -212,18 +214,21 @@ export default function Dao() {
             const signer = provider.getSigner()
             const contract = new ethers.Contract(LendingContract, fetchNftsAbi, signer)
             const stake = await contract.fetchAllNfts()
-            const parsedData = {
-                contractAdd: stake.contractAdd,
-                tokenId: stake.tokenId,
-            }
             console.log(stake)
-            setLendingNfts(parsedData)
-            if (parsedData.tokenId == null) return
-            const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
-            const id = parsedData.tokenId 
-            const uriHere = await nftcontract.tokenURI(id.toNumber())
-            console.log(uriHere)
-            setUri({...parsedData, uri: uriHere})
+
+            const items = await Promise.all(
+                stake.map(async (i) => {
+                    console.log(i[0])
+                    let parsedData = {
+                        contractAdd: i[0],
+                        tokenId: i[1].toNumber(),
+                    }
+                    return parsedData;
+                })
+            );
+
+            console.log(items)
+            setLendingNfts(items)
         } catch (error) {
             console.log(error)
         }
@@ -260,9 +265,11 @@ export default function Dao() {
         <Nav/>
         <div className={styles.container}>
             <div className={styles.sidebar}>
-            { isMember ?  <button className={styles.btn}  onClick={handleLeaveDao}>Leave Dao</button> :  <button className={styles.btn} onClick={handleJoinDao}>Join Dao</button>}        
-            <button className={styles.btn} onClick={() => setSelectedTab("View Proposal")} >Show proposal</button>
-            <button className={styles.btn} onClick={() => setSelectedTab("View Nfts")} >Show Nfts</button>
+                <div className={styles.btndiv}>
+                    { isMember ?  <button className={styles.btn}  onClick={handleLeaveDao}>Leave Dao</button> :  <button className={styles.btn} onClick={handleJoinDao}>Join Dao</button>}        
+                    <button className={styles.btn} onClick={() => setSelectedTab("View Proposal")} >Show proposal</button>
+                    <button className={styles.btn} onClick={() => setSelectedTab("View Nfts")} >Show Nfts</button>
+                </div>
                 <div className={styles.in}> 
                     <input name="contractAdd" placeholder="Contract address" required onChange={(e) => setProposalData({...proposalData, contractAdd: e.target.value,})}/>
                     <input name="tokenId" placeholder="TokenId" required onChange={(e) => setProposalData({...proposalData, tokenId: e.target.value,})}/>

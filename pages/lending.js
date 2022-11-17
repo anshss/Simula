@@ -10,7 +10,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 
 export default function Lending() {
-  const contractAddress = "0x19690Bc3578270654cD89D65cb2779Cf51779C56"
+  const contractAddress = "0xF8d68cE9910D3217cF74e70B2B62FE4cCE260285"
 
   const [nfts, setNfts] = useState([])
   const [dataInput, setData] = useState({ 
