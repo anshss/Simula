@@ -1,14 +1,12 @@
 import styles from '../styles/collateral.module.css'
 import { useEffect, useState } from 'react'
 import Moralis from 'moralis'
-const { EvmChain } = require('@moralisweb3/evm-utils')
 import Nav from '../components/Nav'
 import { contractAddress } from '../address/Collateral.js'
 import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
-import next from 'next'
 import { useRouter } from 'next/router'
 
 export default function Collateral() {
@@ -121,7 +119,7 @@ export default function Collateral() {
         <img src={prop.uri} />
         <div className={styles.inpbutton}>
           <input
-            name="Value"
+            name="Value (Matic)"
             placeholder="Value"
             required
             value={dataInput.value}

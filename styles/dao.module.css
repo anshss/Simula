@@ -1,9 +1,10 @@
 .container{
     min-height: 100vh;
     background-color: rgba(26, 25, 25, 0.863);
+    display: flex;
 }
 
-.join{
+.btn{
     padding: 1rem 2rem ;
     margin:5rem 0 5rem 5rem;
     border-radius: 0.25rem;
@@ -12,7 +13,7 @@
     background-color:rgb(59, 177, 204) ;
     color: #000;
 }
-.join:hover{
+.btn:hover{
     background-color:rgb(210, 245, 253);
 }
 
@@ -55,3 +56,7 @@
 .in > button:hover{
     background-color:rgb(210, 245, 253);
 }
+
+/* ---------- */
+
+

@@ -1,21 +1,15 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
-import "./LendingFunds.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-interface ILendingFunds {
-    function transferFunds(address user, uint256 amount) external;
-}
+contract Lending is ERC721Holder, Ownable {
 
-contract Lending is ERC721Holder {
-    ILendingFunds funds;
-
-    constructor(address _contract) payable {
-        funds = ILendingFunds(_contract);
-    }
+    using Counters for Counters.Counter;
+    Counters.Counter private _counter;
 
     uint256 totalAmount = 0;
 
@@ -34,6 +28,7 @@ contract Lending is ERC721Holder {
 
     mapping (address => Stake) public userToStake;
     mapping (address => uint256) public lastClaimed;
+    mapping (uint256 => Stake) public allNfts;
 
 
     function stake(address _contract, uint256 _tokenId, uint256 _value, uint _term) public {
@@ -43,6 +38,7 @@ contract Lending is ERC721Holder {
         // require(_term >= 4 * 604800); // term should be atleast 1 month
         // require(_term <= 32 * 604800); // term should be less than 4 months
         currentNft.safeTransferFrom(msg.sender, address(this), _tokenId);
+        // userToStake[msg.sender] = Stake(_contract, _tokenId, payable(msg.sender), block.timestamp, _value, _term) * 604800;
         userToStake[msg.sender] = Stake(_contract, _tokenId, payable(msg.sender), block.timestamp, _value, _term);
         lastClaimed[msg.sender] = 0;
         emit staked(msg.sender, _contract, _tokenId, _value, _term);
@@ -63,7 +59,7 @@ contract Lending is ERC721Holder {
         require(lastClaimed[msg.sender] - block.timestamp >= 4*604800, "can only claim once per 4 weeks");
         Stake memory crtStake = userToStake[msg.sender];
         uint256 earned = (7 * crtStake.value) / 100;
-        funds.transferFunds(msg.sender, earned);
+        transferFunds(msg.sender, earned);
         lastClaimed[msg.sender] = block.timestamp;
         emit claimed(msg.sender, earned);
     }
@@ -77,6 +73,18 @@ contract Lending is ERC721Holder {
         }
     }
 
+    function fetchAllNfts() public view returns(Stake[] memory) {
+        Stake[] memory nftArray = new Stake[](_counter.current());
+        uint counter = 0;
+
+        for (uint i = 0; i < _counter.current(); i++) {
+            Stake storage currentItem = allNfts[i];
+            nftArray[counter] = currentItem;
+            counter++;
+        }
+        return nftArray;
+    }
+
     function fetchStake() public view returns(Stake memory) {
         return userToStake[msg.sender];
     }
@@ -84,5 +92,17 @@ contract Lending is ERC721Holder {
     function fetchAmount() public view returns(uint256) {
         return totalAmount;
     }
+
+    function transferFunds(address user, uint256 amount) private {
+        payable(user).transfer(amount);
+    }
+
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
     
+    receive() external payable {}
+
+    fallback() external payable {}
+
 }

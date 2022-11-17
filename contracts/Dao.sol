@@ -37,7 +37,7 @@ contract Dao is Ownable{
     }
 
     mapping(uint256 => Proposal) public idToProposal;
-    uint256 numProposal;
+    uint256 public numProposal;
 
     enum Vote {
         yay,

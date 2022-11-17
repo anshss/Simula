@@ -6,23 +6,28 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import Nav from "../components/Nav"
 
+
 export default function Dao() {
 
-    const DaoContract = "0x665b75D5B4D700394194B853df346dDd701416aD"
+    const DaoContract = "0xE335FCd03D0917dA02062C814F647763943D1918"
+    const LendingContract = "0x19690Bc3578270654cD89D65cb2779Cf51779C56"
 
     useEffect(() => {
-        // fetchAllProposal()
+        fetchAllProposal()
+        fetchNfts()
     }, [])
 
-    const [proposals, setProposals] = useState([])
     const[proposalData, setProposalData] = useState({
         contractAdd: "",
         tokenId: "",
         description: "",
         destination: ""
     })
-    const [numProposals, setNumProposals] = useState("0");
+    const [proposals, setProposals] = useState([])
     const [isMember, setIsMember] = useState(false)
+    const [lendingNfts, setLendingNfts] = useState([])
+    const [selectedTab, setSelectedTab] = useState("View Proposal")
+
 
     async function getContract() {
         const modal = new web3modal(); 
@@ -34,7 +39,7 @@ export default function Dao() {
     }
 
     async function handleJoinDao() {
-        const contract = getContract()
+        const contract = await getContract()
         const price = ethers.utils.parseUnits("1", "ether")
         const txn = await contract.joinDao({value: price})
         await txn.wait()
@@ -42,7 +47,7 @@ export default function Dao() {
     }
 
     async function handleLeaveDao() {
-        const contract = getContract()
+        const contract = await getContract()
         const txn = await contract.leaveDao()
         await txn.wait()
         setIsMember(false)
@@ -50,26 +55,25 @@ export default function Dao() {
 
     
     async function createProposal() {
-        const contract = getContract()
+        const contract = await getContract()
         const txn = await contract.createProposal(proposalData.contractAdd, proposalData.tokenId, proposalData.destination, proposalData.description)
         await txn.wait()
     }
 
     async function getNumProposalsInDAO() {
-        const modal = new web3modal(); 
-        const connection = await modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection) 
-        const contract = new ethers.Contract(contractAddress, contractAbi.abi, provider)
+        const contract = await getContract()
         const daoNumProposals = await contract.numProposal();
-        setNumProposals(daoNumProposals.toString());
+        // setNumProposals(daoNumProposals.toString());
+        return daoNumProposals
     }
     
     async function fetchProposalById(id) {
-        const contract = getContract()
+        const contract = await getContract()
         const proposal = await contract.idToProposal(id)
         const parsedProposal = {
             proposalId: id,
-            nftTokenId: proposal.nftTokenId.toString(),
+            contractAdd: proposal.contractAdd.toString(),
+            nftTokenId: proposal.tokenId.toString(),
             desciption: proposal.desciption,
             deadline: new Date(parseInt(proposal.deadline.toString()) * 1000),
             yayVotes: proposal.yayVotes.toString(),
@@ -81,7 +85,7 @@ export default function Dao() {
 
     async function fetchAllProposal() {
         const proposals = [];
-        const numProposals = getNumProposalsInDAO()
+        const numProposals = await getNumProposalsInDAO()
         for (let i = 0; i < numProposals; i++) {
           const proposal = await fetchProposalById(i);
           proposals.push(proposal);
@@ -91,7 +95,7 @@ export default function Dao() {
 
 
     async function voteProposal(proposalId, _vote) {
-        const contract = getContract()
+        const contract = await getContract()
         let vote = _vote === "YAY" ? 0 : 1;
         const txn = await contract.voteOnProposal(proposalId, vote);
         await txn.wait();
@@ -99,33 +103,178 @@ export default function Dao() {
     }
 
     async function executeProposal() {
-        const contract = getContract()
+        const contract = await getContract()
         const txn = await contract.executeProposal(proposalId);
         await txn.wait();
         await fetchAllProposal();
     }
 
-    return(
-        
-        <div className={styles.container}>
-        <Nav/>
-        { isMember ?  <button className={styles.join}  onClick={handleLeaveDao}>Leave Dao</button> :  <button className={styles.join} onClick={handleJoinDao}>Join Dao</button>}        
-            <div className={styles.in}> 
-                <input name="contractAdd" placeholder="Contract address" required onChange={(e) => setProposalData({...proposalData, contractAdd: e.target.value,})}/>
-                <input name="tokenId" placeholder="TokenId" required onChange={(e) => setProposalData({...proposalData, tokenId: e.target.value,})}/>
-                <input name="description" placeholder="Description" required onChange={(e) => setProposalData({...proposalData, description: e.target.value,})}/>
-                <input name="destination" placeholder="Receiver address" required onChange={(e) => setProposalData({...proposalData, destination: e.target.value,})}/>
-                <button onClick={createProposal}>Propose</button>
-            </div>
-            <div>
-            {proposals.map((item, i) => (
-                <div>
-                    {i}
-                    {item.cover}
-                    {item.tokenId}
+
+    function ProposalCard(prop) {
+        return (
+            <div className={styles.col}>
+                <div className={styles.card}>
+                    {/* <img src={uri} /> */}
+                    <div className={styles.bb}>
+                        <h4>{prop.tokenContract}</h4>
+                        <h4>{prop.tokenId}</h4>
+                        <button onClick={executeProposal}> Execute </button>
+                    </div>
                 </div>
+            </div>
+        )
+    }
+
+    function renderProposal() {
+        return(
+            <>
+            {proposals.map((item, i) => (
+                <ProposalCard
+                    key={i}
+                    tokenId={item.nftTokenId}
+                    tokenContract={item.contractAdd}
+                    desciption={item.desciption}
+                    executed={item.executed}
+                    deadline={item.deadline}
+                    yay={item.yayVotes}
+                    nay={item.nayVotes}
+                />
             ))}
+            </>
+        )
+    }
+
+    function NftCard(prop) {
+        return (
+            <div className={styles.card}>
+                {/* <img src={uri} /> */}
+                <div className={styles.bb}>
+                    <h4>{prop.tokenContract}</h4>
+                    <h4>{prop.tokenId}</h4>
+                </div>
+            </div>
+        )
+    }
+
+    const fetchNftsAbi = [
+        {
+            "inputs": [],
+            "name": "fetchAllNfts",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "contractAdd",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "tokenId",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "timestamp",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "term",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct Lending.Stake[]",
+                "name": "",
+                "type": "tuple[]"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          }
+    ]
+    
+    async function fetchNfts() {
+        try{
+            const modal = new web3modal(); 
+            const connection = await modal.connect()
+            const provider = new ethers.providers.Web3Provider(connection) 
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(LendingContract, fetchNftsAbi, signer)
+            const stake = await contract.fetchAllNfts()
+            const parsedData = {
+                contractAdd: stake.contractAdd,
+                tokenId: stake.tokenId,
+            }
+            console.log(stake)
+            setLendingNfts(parsedData)
+            if (parsedData.tokenId == null) return
+            const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
+            const id = parsedData.tokenId 
+            const uriHere = await nftcontract.tokenURI(id.toNumber())
+            console.log(uriHere)
+            setUri({...parsedData, uri: uriHere})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function renderNfts() {
+        return(
+            <>
+                {lendingNfts.map((nft, i) => (
+                    <NftCard
+                    key={i}
+                    // uri={nft.token_uri}
+                    tokenContract={nft.contractAdd}
+                    tokenId={nft.tokenId}
+                    />
+                ))}
+            </>
+        )
+    }
+
+    function rendertabs() {
+        if (selectedTab === "View Proposal") {
+            return renderProposal();
+        } else if (selectedTab === "View Nfts") {
+            return renderNfts();
+        }
+        return null;
+    }
+
+
+
+    return(
+        <>
+        <Nav/>
+        <div className={styles.container}>
+            <div className={styles.sidebar}>
+            { isMember ?  <button className={styles.btn}  onClick={handleLeaveDao}>Leave Dao</button> :  <button className={styles.btn} onClick={handleJoinDao}>Join Dao</button>}        
+            <button className={styles.btn} onClick={() => setSelectedTab("View Proposal")} >Show proposal</button>
+            <button className={styles.btn} onClick={() => setSelectedTab("View Nfts")} >Show Nfts</button>
+                <div className={styles.in}> 
+                    <input name="contractAdd" placeholder="Contract address" required onChange={(e) => setProposalData({...proposalData, contractAdd: e.target.value,})}/>
+                    <input name="tokenId" placeholder="TokenId" required onChange={(e) => setProposalData({...proposalData, tokenId: e.target.value,})}/>
+                    <input name="description" placeholder="Description" required onChange={(e) => setProposalData({...proposalData, description: e.target.value,})}/>
+                    <input name="destination" placeholder="Receiver address" required onChange={(e) => setProposalData({...proposalData, destination: e.target.value,})}/>
+                    <button onClick={createProposal}>Propose</button>
+                </div>
+            </div>
+            <div className={styles.card}>
+            {rendertabs()}
             </div>
         </div>
+        </>
     )
 }

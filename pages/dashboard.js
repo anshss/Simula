@@ -11,18 +11,25 @@ import { useRouter } from 'next/router';
 export default function Dashboard() {
 
     const [uri, setUri] = useState({collateral: "", lending: ""})
-    const [claimed, setClaimed] = useState(false)
     const [collateralClaimed, setCollateralClaimed] = useState(false)
     const [lendingClaimed, setLendingClaimed] = useState(false)
 
     useEffect(() => {
-        fetchLendingStake()
-        fetchCollateralStake()
+        fetchdata()
         hasClaimedCollateral()
         claimTime()
     }, [])
 
-    const LendingContract = "0x114B55744c7b88F6af2606284b051C6Ec9B778e4";
+    async function fetchdata() {
+        const promise1 = fetchCollateralStake()
+        const promise2 = fetchLendingStake()
+        const [result1, result2] = await Promise.all([
+            promise1,
+            promise2,
+        ])
+    }
+
+    const LendingContract = "0x0abEaF7eE91C9783634F0BCC382417f53e00F154";
     const CollateralContract = "0x5d5B63B926fD5767C3b4a53CF12C09907a6A7dF2";
     const CollateralFundsContract = "0xEEe6e5f99AA223CD3A7B1abD1331C9567e9Bc9EF";
     const tokenAddress = "0xFA31614f5F776eDD6f72Bc00BdEb22Bd4A59A7Db" //usdt
@@ -83,7 +90,7 @@ export default function Dashboard() {
                 contractAdd: stake.contractAdd,
                 tokenId: stake.tokenId,
             }
-            console.log(parsedData)
+            console.log("collateral", parsedData)
             if (parsedData.tokenId == null) return
             const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
             const id = parsedData.tokenId
@@ -107,19 +114,23 @@ export default function Dashboard() {
             from: user,
             gasPrice: gas,
             gasLimit: "1000000",
-            // maxFeePerGas: "300",
-            // maxPriorityFeePerGas: "10",
+            maxFeePerGas: "300",
+            maxPriorityFeePerGas: "10",
           };
         const txn = await contract.claim()
         hasClaimedCollateral()
     }
 
     async function hasClaimedCollateral() {
-        const provider = await getSignerOrProvider()
-        const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, provider)
-        const user = await fetchAccount()
-        const txn = await contract.hasClaimed(user)
-        setCollateralClaimed(txn)
+        try {
+            const provider = await getSignerOrProvider()
+            const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, provider)
+            const user = await fetchAccount()
+            const txn = await contract.hasClaimed(user)
+            setCollateralClaimed(txn)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     
@@ -195,7 +206,7 @@ export default function Dashboard() {
     // ----------------------- Lending
 
     async function fetchLendingStake() {
-        try {
+        try{
             const signer = await getSignerOrProvider(true)
             const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
             const user = await fetchAccount()
@@ -205,12 +216,12 @@ export default function Dashboard() {
                 tokenId: stake.tokenId,
             }
             console.log(parsedData)
-            if (parsedData.tokenId) return
+            if (parsedData.tokenId == null) return
             const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
-            const uriHere = await nftcontract.tokenURI(parsedData.tokenId)
-            console.log(uri)
+            const id = parsedData.tokenId
+            const uriHere = await nftcontract.tokenURI(id.toNumber())
+            console.log(uriHere)
             setUri({...uri, lending: uriHere})
-            
         } catch (error) {
             console.log(error)
         }
@@ -232,10 +243,14 @@ export default function Dashboard() {
     }
 
     async function claimTime() {
-        const signer = await getSignerOrProvider(true)
-        const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
-        const txn = await contract.claimTime()
-        setLendingClaimed(txn)
+        try {
+            const signer = await getSignerOrProvider(true)
+            const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
+            const txn = await contract.claimTime()
+            setLendingClaimed(txn)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     function CardLending() {
