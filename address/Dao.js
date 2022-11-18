@@ -1,1 +1,1 @@
-export const DaoContract = "0x21f94f281175Eb1caC34334176c6D93BdB66A550"
+export const DaoContract = "0x9309e67E372CcE8c057196Fd8F9826053F38342F"

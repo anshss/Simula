@@ -7,7 +7,7 @@ const Nav = () => {
       <nav className={navStyles.nav}>
         <ul>
             <li>
-                <Link href='/'><h2>Simulaa</h2></Link>
+                <Link href='/'><h2>Simula</h2></Link>
             </li>
         </ul>
         <ul>

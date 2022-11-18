@@ -1,1 +1,1 @@
-export const CollateralFundsContract = "0xb41eA4DEF472879812DF17d987Be179073AB5f46"
+export const CollateralFundsContract = "0x406685239C821236343Ef4d76BE3F65c1cFb278B"

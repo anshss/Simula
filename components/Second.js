@@ -8,7 +8,7 @@ export default function Second() {
           <img src="img5.jpg" alt="vrfnorn" />
         </div>
         <div>
-          <h1 className={secondStyles.title}>Lenders</h1>
+          <h1 className={secondStyles.title}>Lending</h1>
           <h2 className={secondStyles.two}>
             Get regular interest on your NFT
           </h2>

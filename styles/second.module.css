@@ -44,7 +44,8 @@
     }
 
 .description{
-    font-size: 1.2rem;
+    line-height: 2rem;
+    font-size: 1.5rem;
     color :rgb(59, 177, 204);
     margin-top: -.3rem;
     padding-left: 2rem;

@@ -10,19 +10,17 @@ import Nav from "../components/Nav"
 
 export default function Dao() {
 
-    // const DaoContract = "0x21f94f281175Eb1caC34334176c6D93BdB66A550"
-    // const LendingContract = "0x86cd9d28561d041c1DC9F9af4d360FE80f885c67"
-
     useEffect(() => {
         fetchAllProposal()
         fetchNfts()
+        checkMember()
     }, [])
 
     const[proposalData, setProposalData] = useState({
         contractAdd: "",
         tokenId: "",
-        description: "",
-        destination: ""
+        destination: "",
+        description: ""
     })
     const [proposals, setProposals] = useState([])
     const [isMember, setIsMember] = useState(false)
@@ -39,19 +37,24 @@ export default function Dao() {
         return contract
     }
 
+    async function checkMember() {
+        const contract = await getContract()
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const txn = await contract.daoMember(accounts[0])
+        setIsMember(txn[1])
+    }
+
     async function handleJoinDao() {
         const contract = await getContract()
         const price = ethers.utils.parseUnits("1", "ether")
         const txn = await contract.joinDao({value: price})
         await txn.wait()
-        setIsMember(true)
     }
 
     async function handleLeaveDao() {
         const contract = await getContract()
         const txn = await contract.leaveDao()
         await txn.wait()
-        setIsMember(false)
     }
 
     

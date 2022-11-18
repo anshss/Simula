@@ -39,7 +39,7 @@ export default function Collateral() {
   async function fetch(user) {
     await Moralis.start({
       apiKey:
-        'ECu9sgtiXTgwMKEoJCg0xkjXfwm2R3NhOAATMBiTNIQoIzd7cAmeBibctzQyLkvY',
+        process.env.MORALIS_API_KEY,
     })
 
     const options = {

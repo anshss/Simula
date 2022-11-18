@@ -8,6 +8,8 @@ import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { Web3Storage } from 'web3.storage'
+import { saveAs } from "file-saver";
 
 export default function Lending() {
 
@@ -37,7 +39,7 @@ export default function Lending() {
   async function fetch(user) {
     await Moralis.start({
       apiKey:
-        'ECu9sgtiXTgwMKEoJCg0xkjXfwm2R3NhOAATMBiTNIQoIzd7cAmeBibctzQyLkvY',
+        process.env.MORALIS_API_KEY,
     })
 
     const options = {
@@ -108,11 +110,55 @@ export default function Lending() {
       parseValue,
       dataInput.term,
     )
-    await approve.wait()
-    await txn.wait()
-    router.push("/dashboard")
-    // fetch()
+    await receipt(
+      prop.tokenContract,
+      prop.tokenId,
+      dataInput.term,
+      dataInput.value,
+      )
+      await approve.wait()
+      await txn.wait()
+  // router.push('/dashboard')
+  fetch()
   }
+
+    // -------------receipt
+
+    function getAccessToken() {
+      return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGQ4NzhFNjQ1NkUwYzUyYzE2RDI5ODI0MWUzNzA1MWY0NDgyM2Q1MTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjM2MTU3ODEyMTksIm5hbWUiOiJGb3IgbXkgcHJvamVjdCJ9.4p3tWCPEz4FA9kO9M6-JvrNVyQorsVWXCvJ89ByoWx4'
+    }
+  
+    function makeStorageClient() {
+      return new Web3Storage({ token: getAccessToken() })
+    }
+  
+    const uploadToIPFS = async (files) => {
+      const client = makeStorageClient()
+      const cid = await client.put(files)
+      return cid
+    }
+  
+    async function receipt(nftContract, tokenId, term, value) {
+      const data = JSON.stringify({
+        nftContract: nftContract,
+        tokenId: tokenId,
+        term: term,
+        value: value,
+      })
+      const files = [new File([data], 'data.json')]
+      const metaCID = await uploadToIPFS(files)
+      console.log(`https://ipfs.io/ipfs/${metaCID}/data.json`)
+      const url =  `https://ipfs.io/ipfs/${metaCID}/data.json`
+      Download('receipt.txt', url)
+    }
+  
+    async function Download(_fileName, _fileUrl) {
+      const name = _fileName;
+      const fileUrl = _fileUrl;
+      saveAs(fileUrl, name);
+  }
+  
+    // -------------receipt
 
   function Card(prop) {
     return (
