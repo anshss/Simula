@@ -1,4 +1,6 @@
-// import { contractAddress } from "../address/Collateral.js"
+import { LendingContract } from "../address/Lending.js"
+import { CollateralContract } from "../address/Collateral.js"
+import { CollateralFundsContract } from "../address/CollateralFunds.js"
 import styles from '../styles/dashboard.module.css'; 
 import CollateralContractAbi from "../artifacts/contracts/Collateral.sol/Collateral.json";
 import LendingContractAbi from "../artifacts/contracts/Lending.sol/Lending.json";
@@ -13,9 +15,10 @@ export default function Dashboard() {
     const [uri, setUri] = useState({collateral: "", lending: ""})
     const [collateralClaimed, setCollateralClaimed] = useState(false)
     const [lendingClaimed, setLendingClaimed] = useState(false)
+    const [state, setState] = useState(false)
 
     useEffect(() => {
-        fetchdata()
+        fetchdata().then(setState(true))
         hasClaimedCollateral()
         claimTime()
     }, [])
@@ -29,9 +32,9 @@ export default function Dashboard() {
         ])
     }
 
-    const LendingContract = "0x0abEaF7eE91C9783634F0BCC382417f53e00F154";
-    const CollateralContract = "0x5d5B63B926fD5767C3b4a53CF12C09907a6A7dF2";
-    const CollateralFundsContract = "0xEEe6e5f99AA223CD3A7B1abD1331C9567e9Bc9EF";
+    // const LendingContract = "0xB1D590A1Ccc6Ae396279092163E51FB75A522506";
+    // const CollateralContract = "0xDbAe147fbcCE70b6C238f231ff854817412720a8";
+    // const CollateralFundsContract = "0xb41eA4DEF472879812DF17d987Be179073AB5f46";
     const tokenAddress = "0xFA31614f5F776eDD6f72Bc00BdEb22Bd4A59A7Db" //usdt
 
     const router = useRouter()
@@ -90,7 +93,7 @@ export default function Dashboard() {
                 contractAdd: stake.contractAdd,
                 tokenId: stake.tokenId,
             }
-            console.log("collateral", parsedData)
+            // console.log("collateral", parsedData)
             if (parsedData.tokenId == null) return
             const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
             const id = parsedData.tokenId
@@ -98,7 +101,7 @@ export default function Dashboard() {
             console.log(uriHere)
             setUri({...uri, collateral: uriHere})
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -111,7 +114,7 @@ export default function Dashboard() {
         const gasPrice = await provider.getFeeData();
         const gas = ethers.utils.formatUnits(gasPrice.gasPrice, "wei");
         const transaction = {
-            from: user,
+            from: user, 
             gasPrice: gas,
             gasLimit: "1000000",
             maxFeePerGas: "300",
@@ -129,7 +132,7 @@ export default function Dashboard() {
             const txn = await contract.hasClaimed(user)
             setCollateralClaimed(txn)
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -215,7 +218,7 @@ export default function Dashboard() {
                 contractAdd: stake.contractAdd,
                 tokenId: stake.tokenId,
             }
-            console.log(parsedData)
+            // console.log(parsedData)
             if (parsedData.tokenId == null) return
             const nftcontract = new ethers.Contract(parsedData.contractAdd, uriAbi, signer)
             const id = parsedData.tokenId
@@ -223,7 +226,7 @@ export default function Dashboard() {
             console.log(uriHere)
             setUri({...uri, lending: uriHere})
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -249,7 +252,7 @@ export default function Dashboard() {
             const txn = await contract.claimTime()
             setLendingClaimed(txn)
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -269,6 +272,7 @@ export default function Dashboard() {
         )
     }
 
+    if(state == true){
     return (
         <div>
             <Nav />
@@ -284,5 +288,6 @@ export default function Dashboard() {
             </div>
         </div>
     )
+    }
 }
 

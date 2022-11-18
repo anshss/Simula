@@ -41,6 +41,8 @@ contract Lending is ERC721Holder, Ownable {
         // userToStake[msg.sender] = Stake(_contract, _tokenId, payable(msg.sender), block.timestamp, _value, _term) * 604800;
         userToStake[msg.sender] = Stake(_contract, _tokenId, payable(msg.sender), block.timestamp, _value, _term);
         lastClaimed[msg.sender] = 0;
+        _counter.increment();
+        allNfts[_counter.current()] = userToStake[msg.sender];
         emit staked(msg.sender, _contract, _tokenId, _value, _term);
         totalAmount += _value;
     }
@@ -55,8 +57,8 @@ contract Lending is ERC721Holder, Ownable {
         emit unstaked(msg.sender, crtStake.contractAdd, crtStake.tokenId, crtStake.value, crtStake.term);
     }
 
-    function claim() private {
-        require(lastClaimed[msg.sender] - block.timestamp >= 4*604800, "can only claim once per 4 weeks");
+    function claim() public {
+        require(block.timestamp - lastClaimed[msg.sender]  >= 4*604800, "can only claim once per 4 weeks");
         Stake memory crtStake = userToStake[msg.sender];
         uint256 earned = (7 * crtStake.value) / 100;
         transferFunds(msg.sender, earned);
@@ -77,8 +79,8 @@ contract Lending is ERC721Holder, Ownable {
         Stake[] memory nftArray = new Stake[](_counter.current());
         uint counter = 0;
 
-        for (uint i = 0; i < _counter.current(); i++) {
-            Stake storage currentItem = allNfts[i];
+        for (uint i=0; i<_counter.current(); i++) {
+            Stake storage currentItem = allNfts[i+1];
             nftArray[counter] = currentItem;
             counter++;
         }

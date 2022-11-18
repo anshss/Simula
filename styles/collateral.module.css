@@ -1,10 +1,11 @@
 .container{
     background-color: rgba(0, 0, 0, 0.863);
-    min-height:100vh;
+    /* min-height:100vh; */
+
 }
 
 .container > h2 {
-    margin-left:2.5rem ;
+    margin-left: 2.5rem;
     padding-bottom: 1rem;
     font-size:2rem ;
     font-weight: 500;
@@ -24,10 +25,12 @@
 
 .images{
     display: flex;
-    gap:2.5rem;
+    /* width: 100rem; */
+    gap: 2.5rem;
     margin-left: 2.5rem;
-    
-
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 .cltrlbutton{
@@ -68,4 +71,10 @@ gap :6px;
 }
 .inpbutton > input[type=text]:focus {
     /* border: 3px solid rgb(59, 177, 204); */
+}
+
+
+.noNft {
+    /* color :rgb(236, 14, 181); */
+    margin-left: 2.5rem;
 }

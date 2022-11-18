@@ -2,7 +2,7 @@ import styles from '../styles/collateral.module.css'
 import { useEffect, useState } from 'react'
 import Moralis from 'moralis'
 import Nav from '../components/Nav'
-import { contractAddress } from '../address/Lending.js'
+import { LendingContract } from '../address/Lending.js'
 import contractAbi from '../artifacts/contracts/Lending.sol/Lending.json'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
@@ -10,7 +10,8 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 
 export default function Lending() {
-  const contractAddress = "0xF8d68cE9910D3217cF74e70B2B62FE4cCE260285"
+
+  const contractAddress = LendingContract
 
   const [nfts, setNfts] = useState([])
   const [dataInput, setData] = useState({ 
@@ -140,10 +141,20 @@ export default function Lending() {
     )
   }
 
+  if (nfts.length == 0) {
+    return ( 
+      <div className={styles.container}>
+        <Nav />
+        <h2>Lend to us, and get 7% each month</h2>
+        <h1 className={styles.noNft}>No Nfts in your wallet</h1>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Nav />
-      <h2>Get 7% each month</h2>
+      <h2>Lend to us, and get 7% each month</h2>
       <div className={styles.images}>
         {nfts.map((nft, i) => (
           <Card

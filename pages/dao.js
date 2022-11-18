@@ -1,4 +1,5 @@
-// import { contractAddress } from "../address/Dao.js"; 
+import { DaoContract } from "../address/Dao.js"; 
+import { LendingContract } from '../address/Lending.js'
 import styles from '../styles/dao.module.css'
 import contractAbi from "../artifacts/contracts/Dao.sol/Dao.json";
 import web3modal from "web3modal"; 
@@ -9,8 +10,8 @@ import Nav from "../components/Nav"
 
 export default function Dao() {
 
-    const DaoContract = "0xE335FCd03D0917dA02062C814F647763943D1918"
-    const LendingContract = "0xF8d68cE9910D3217cF74e70B2B62FE4cCE260285"
+    // const DaoContract = "0x21f94f281175Eb1caC34334176c6D93BdB66A550"
+    // const LendingContract = "0x86cd9d28561d041c1DC9F9af4d360FE80f885c67"
 
     useEffect(() => {
         fetchAllProposal()
@@ -58,28 +59,36 @@ export default function Dao() {
         const contract = await getContract()
         const txn = await contract.createProposal(proposalData.contractAdd, proposalData.tokenId, proposalData.destination, proposalData.description)
         await txn.wait()
+        fetchAllProposal()
     }
 
     async function getNumProposalsInDAO() {
-        const contract = await getContract()
-        const daoNumProposals = await contract.numProposal();
-        // setNumProposals(daoNumProposals.toString());
-        return daoNumProposals
+        try {
+            const contract = await getContract()
+            const daoNumProposals = await contract.numProposal();
+            // setNumProposals(daoNumProposals.toString());
+            return daoNumProposals
+        } catch (error) {
+            console.log(error)
+        }
     }
     
     async function fetchProposalById(id) {
         const contract = await getContract()
         const proposal = await contract.idToProposal(id)
+        console.log(proposal)
         const parsedProposal = {
             proposalId: id,
             contractAdd: proposal.contractAdd.toString(),
             nftTokenId: proposal.tokenId.toString(),
-            desciption: proposal.desciption,
+            desciption: proposal.descriptio,
             deadline: new Date(parseInt(proposal.deadline.toString()) * 1000),
-            yayVotes: proposal.yayVotes.toString(),
-            nayVotes: proposal.nayVotes.toString(),
+            yayVotes: proposal.yayVotes.toNumber(),
+            nayVotes: proposal.nayVotes.toNumber(),
             executed: proposal.executed,
+            destination: proposal.destination,
           };
+          console.log(parsedProposal)
           return parsedProposal;
     }
 
@@ -87,7 +96,7 @@ export default function Dao() {
         const proposals = [];
         const numProposals = await getNumProposalsInDAO()
         for (let i = 0; i < numProposals; i++) {
-          const proposal = await fetchProposalById(i);
+          const proposal = await fetchProposalById(i+1);
           proposals.push(proposal);
         }
         setProposals(proposals);
@@ -97,18 +106,39 @@ export default function Dao() {
     async function voteProposal(proposalId, _vote) {
         const contract = await getContract()
         let vote = _vote === "YAY" ? 0 : 1;
-        const txn = await contract.voteOnProposal(proposalId, vote);
+        const txn = await contract.voteProposal(proposalId, vote);
         await txn.wait();
         await fetchAllProposal();
     }
 
-    async function executeProposal() {
+    async function executeProposal(proposalId) {
         const contract = await getContract()
         const txn = await contract.executeProposal(proposalId);
         await txn.wait();
         await fetchAllProposal();
     }
 
+
+    function renderProposal() {
+        return(
+            <>
+            {proposals.map((item, i) => (
+                <ProposalCard
+                    key={i}
+                    proposalId={item.proposalId}
+                    tokenId={item.nftTokenId}
+                    tokenContract={item.contractAdd}
+                    destination={item.destination}
+                    desciption={item.desciption}
+                    executed={item.executed}
+                    deadline={item.deadline}
+                    yay={item.yayVotes}
+                    nay={item.nayVotes}
+                />
+            ))}
+            </>
+        )
+    }
 
     function ProposalCard(prop) {
         return (
@@ -117,10 +147,12 @@ export default function Dao() {
                 <div className={styles.subdiv}>
                     <h4>address: {prop.tokenContract}</h4>
                     <h4>tokenId: {prop.tokenId}</h4>
+                    {/* <p>description: {prop.description}</p> */}
+                    {/* <p>destination: {prop.destination}</p> */}
                     <div className={styles.cardbtns}>
-                        <button onClick={styles.yay} className={styles.cardbtn}> yay </button>
-                        <button onClick={styles.nay} className={styles.cardbtn}> nay </button>
-                        <button onClick={executeProposal} className={styles.cardbtn}> Execute </button>
+                        <button className={styles.cardbtn} onClick={() => voteProposal(prop.proposalId, "YAY")}> yay </button>
+                        <button className={styles.cardbtn} onClick={() => voteProposal(prop.proposalId, "NAY")}> nay </button>
+                        <button className={styles.cardbtn} onClick={() => executeProposal(prop.proposalId)}> Execute </button>
                     </div>
                 </div>
             </div>
@@ -135,26 +167,6 @@ export default function Dao() {
                     <h4>tokenId: {prop.tokenId}</h4>
                 </div>
             </div>
-        )
-    }
-
-
-    function renderProposal() {
-        return(
-            <>
-            {proposals.map((item, i) => (
-                <ProposalCard
-                    key={i}
-                    tokenId={item.nftTokenId}
-                    tokenContract={item.contractAdd}
-                    desciption={item.desciption}
-                    executed={item.executed}
-                    deadline={item.deadline}
-                    yay={item.yayVotes}
-                    nay={item.nayVotes}
-                />
-            ))}
-            </>
         )
     }
 
@@ -214,11 +226,11 @@ export default function Dao() {
             const signer = provider.getSigner()
             const contract = new ethers.Contract(LendingContract, fetchNftsAbi, signer)
             const stake = await contract.fetchAllNfts()
-            console.log(stake)
+            // console.log(stake)
 
             const items = await Promise.all(
                 stake.map(async (i) => {
-                    console.log(i[0])
+                    // console.log(i[0])
                     let parsedData = {
                         contractAdd: i[0],
                         tokenId: i[1].toNumber(),
@@ -227,7 +239,7 @@ export default function Dao() {
                 })
             );
 
-            console.log(items)
+            // console.log(items)
             setLendingNfts(items)
         } catch (error) {
             console.log(error)

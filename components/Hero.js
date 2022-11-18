@@ -17,7 +17,7 @@ export default function  Hero () {
         <Link href='/collateral'><button className={headerStyles.start}>Get Started</button></Link>
       </div>
       <div className={headerStyles.image}>
-        <img src="img4.png"/>
+        <img src="creepz.png"/>
       </div>
     </div>
       

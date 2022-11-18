@@ -2,20 +2,23 @@ import styles from '../styles/collateral.module.css'
 import { useEffect, useState } from 'react'
 import Moralis from 'moralis'
 import Nav from '../components/Nav'
-import { contractAddress } from '../address/Collateral.js'
+import { CollateralContract } from '../address/Collateral.js'
 import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { Web3Storage } from 'web3.storage'
+import { saveAs } from "file-saver";
 
 export default function Collateral() {
-  const contractAddress = "0x5d5B63B926fD5767C3b4a53CF12C09907a6A7dF2"
+
+  const contractAddress = CollateralContract
 
   const [nfts, setNfts] = useState([])
-  const [dataInput, setData] = useState({ 
-    value: "", 
-    term: "" 
+  const [dataInput, setData] = useState({
+    value: '',
+    term: '',
   })
 
   const router = useRouter()
@@ -95,7 +98,7 @@ export default function Collateral() {
     )
     const approve = await nftcontract.approve(contractAddress, prop.tokenId)
     const valueString = dataInput.value
-    const parseValue = ethers.utils.parseUnits(valueString , 'ether')
+    const parseValue = ethers.utils.parseUnits(valueString, 'ether')
     const contract = new ethers.Contract(
       contractAddress,
       contractAbi.abi,
@@ -106,12 +109,58 @@ export default function Collateral() {
       prop.tokenId,
       parseValue,
       dataInput.term,
-    )
-    await approve.wait()
-    await txn.wait()
-    router.push("/dashboard")
-    // fetch()
+      )
+      await receipt(
+        prop.tokenContract,
+        prop.tokenId,
+        dataInput.term,
+        dataInput.value,
+        )
+        await approve.wait()
+        await txn.wait()
+    // router.push('/dashboard')
+    fetch()
   }
+
+
+  // -------------receipt
+
+  function getAccessToken() {
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGQ4NzhFNjQ1NkUwYzUyYzE2RDI5ODI0MWUzNzA1MWY0NDgyM2Q1MTUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjM2MTU3ODEyMTksIm5hbWUiOiJGb3IgbXkgcHJvamVjdCJ9.4p3tWCPEz4FA9kO9M6-JvrNVyQorsVWXCvJ89ByoWx4'
+  }
+
+  function makeStorageClient() {
+    return new Web3Storage({ token: getAccessToken() })
+  }
+
+  const uploadToIPFS = async (files) => {
+    const client = makeStorageClient()
+    const cid = await client.put(files)
+    return cid
+  }
+
+  async function receipt(nftContract, tokenId, term, value) {
+    const data = JSON.stringify({
+      nftContract: nftContract,
+      tokenId: tokenId,
+      term: term,
+      value: value,
+    })
+    const files = [new File([data], 'data.json')]
+    const metaCID = await uploadToIPFS(files)
+    console.log(`https://ipfs.io/ipfs/${metaCID}/data.json`)
+    const url =  `https://ipfs.io/ipfs/${metaCID}/data.json`
+    Download('receipt.txt', url)
+  }
+
+  async function Download(_fileName, _fileUrl) {
+    const name = _fileName;
+    const fileUrl = _fileUrl;
+    saveAs(fileUrl, name);
+}
+
+  // -------------receipt
+
 
   function Card(prop) {
     return (
@@ -123,14 +172,14 @@ export default function Collateral() {
             placeholder="Value"
             required
             value={dataInput.value}
-            onChange={(e) => setData({ ...dataInput, value: e.target.value,})}
+            onChange={(e) => setData({ ...dataInput, value: e.target.value })}
           />
           <input
             name="Term"
             placeholder="Term (weeks)"
             required
             value={dataInput.term}
-            onChange={(e) => setData({ ...dataInput, term: e.target.value, })}
+            onChange={(e) => setData({ ...dataInput, term: e.target.value })}
           />
         </div>
         <button className={styles.cltrlbutton} onClick={() => Collateral(prop)}>
@@ -140,10 +189,21 @@ export default function Collateral() {
     )
   }
 
+  if (nfts.length == 0) {
+    return (
+      <div className={styles.container}>
+        <Nav />
+        <h2>Lock your Nfts and get 40% of value</h2>
+        <h1 className={styles.noNft}>No Nfts in your wallet</h1>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Nav />
       <h2>Lock your Nfts and get 40% of value</h2>
+
       <div className={styles.images}>
         {nfts.map((nft, i) => (
           <Card

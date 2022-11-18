@@ -32,8 +32,9 @@
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
-    background-color: #fff;
-    color: #000;
+    background-color: rgb(236, 14, 181);
+    color: white;
+    /* color: #000; */
 
 }
 .login:hover{

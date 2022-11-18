@@ -24,6 +24,7 @@ const Nav = () => {
                 <Link href='/dashboard'>Dashboard</Link>
             </li>
             <button className={navStyles.login}><SignIn /></button>
+            {/* <SignIn /> */}
             
         </ul>
       </nav>

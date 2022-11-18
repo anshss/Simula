@@ -68,8 +68,9 @@
 /* ---------- */
 
 .card {
-    width: 32rem;
+    width: 35rem;
     display: flex;
+    flex-direction: column;
     /* justify-content: flex-end; */
     align-items: flex-start;
     /* align-content: flex-start; */
@@ -84,6 +85,13 @@
     padding: 1rem;
     border: 1px solid rgb(59, 177, 204);
     border-radius: 0.5rem;
+}
+
+.subdiv>p {
+    margin: 0.7rem;
+}
+.subdiv>h4 {
+    margin: 0.7rem;
 }
 
 .cardbtns {
