@@ -10,16 +10,13 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { Web3Storage } from 'web3.storage'
 import { saveAs } from "file-saver";
+import { Card } from '../components/CardLending'
 
 export default function Lending() {
 
   const contractAddress = LendingContract
 
   const [nfts, setNfts] = useState([])
-  const [dataInput, setData] = useState({ 
-    value: "", 
-    term: "" 
-  })
 
   const router = useRouter()
 
@@ -118,8 +115,8 @@ export default function Lending() {
       )
       await approve.wait()
       await txn.wait()
-  // router.push('/dashboard')
-  fetch()
+      // router.push('/dashboard')
+      fetch()
   }
 
     // -------------receipt
@@ -160,33 +157,6 @@ export default function Lending() {
   
     // -------------receipt
 
-  function Card(prop) {
-    return (
-      <div className={styles.card}>
-        <img src={prop.uri} />
-        <div className={styles.inpbutton}>
-          <input
-            name="Value"
-            placeholder="Value (Matic)"
-            required
-            value={dataInput.value}
-            onChange={(e) => setData({ ...dataInput, value: e.target.value,})}
-          />
-          <input
-            name="Term"
-            placeholder="Term (weeks)"
-            required
-            value={dataInput.term}
-            onChange={(e) => setData({ ...dataInput, term: e.target.value, })}
-          />
-        </div>
-        <button className={styles.cltrlbutton} onClick={() => Lending(prop)}>
-        Lending
-        </button>
-      </div>
-    )
-  }
-
   if (nfts.length == 0) {
     return ( 
       <div className={styles.container}>
@@ -208,6 +178,7 @@ export default function Lending() {
             uri={nft.token_uri}
             tokenContract={nft.token_address}
             tokenId={nft.token_id}
+            Lending={Lending}
           />
         ))}
       </div>

@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-chai-matchers");
 const fs = require('fs'); 
 const privateKey = fs.readFileSync(".secret").toString() 
-const infuraId = fs.readFileSync(".infuraId").toString()
+const quicknodeId = fs.readFileSync(".quicknodeId").toString()
 
 module.exports = { 
   defaultNetwork : "hardhat", 
@@ -10,7 +10,7 @@ module.exports = {
       chainId: 1337 
     }, 
     mumbai: { 
-      url: `https://polygon-mumbai.infura.io/v3/${infuraId}`, 
+      url: `https://divine-silent-grass.matic-testnet.discover.quiknode.pro/${quicknodeId}/`,
       accounts: [privateKey] 
     }, 
   }, 

@@ -10,16 +10,13 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { Web3Storage } from 'web3.storage'
 import { saveAs } from "file-saver";
+import { Card } from '../components/CardCollateral'
 
 export default function Collateral() {
 
   const contractAddress = CollateralContract
 
   const [nfts, setNfts] = useState([])
-  const [dataInput, setData] = useState({
-    value: '',
-    term: '',
-  })
 
   const router = useRouter()
 
@@ -115,11 +112,11 @@ export default function Collateral() {
         prop.tokenId,
         dataInput.term,
         dataInput.value,
-        )
-        await approve.wait()
-        await txn.wait()
-    // router.push('/dashboard')
-    fetch()
+      )
+      await approve.wait()
+      await txn.wait()
+      // router.push('/dashboard')
+      fetch()
   }
 
 
@@ -161,34 +158,6 @@ export default function Collateral() {
 
   // -------------receipt
 
-
-  function Card(prop) {
-    return (
-      <div className={styles.card}>
-        <img src={prop.uri} />
-        <div className={styles.inpbutton}>
-          <input
-            name="Value (Matic)"
-            placeholder="Value"
-            required
-            value={dataInput.value}
-            onChange={(e) => setData({ ...dataInput, value: e.target.value })}
-          />
-          <input
-            name="Term"
-            placeholder="Term (weeks)"
-            required
-            value={dataInput.term}
-            onChange={(e) => setData({ ...dataInput, term: e.target.value })}
-          />
-        </div>
-        <button className={styles.cltrlbutton} onClick={() => Collateral(prop)}>
-          Collateral
-        </button>
-      </div>
-    )
-  }
-
   if (nfts.length == 0) {
     return (
       <div className={styles.container}>
@@ -211,9 +180,11 @@ export default function Collateral() {
             uri={nft.token_uri}
             tokenContract={nft.token_address}
             tokenId={nft.token_id}
+            Collateral={Collateral}
           />
         ))}
       </div>
     </div>
   )
 }
+
