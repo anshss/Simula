@@ -24,7 +24,7 @@ Get a utility for it at our platform, either giving it as collateral and taking 
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/anshss/defining-Defi.git
+   git clone https://github.com/anshss/Simula.git
    
    ```
 2. Install NPM packages
@@ -43,5 +43,3 @@ Get a utility for it at our platform, either giving it as collateral and taking 
 [Video explanation](https://youtu.be/4od72rInPjM)
 <br/>
 <br/>
-
-(only a readme link fix edit is made after project submission)
