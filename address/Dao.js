@@ -1,1 +1,0 @@
-export const DaoContract = "0x9309e67E372CcE8c057196Fd8F9826053F38342F"
