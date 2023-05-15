@@ -1,7 +1,7 @@
 import headerStyles from '../styles/Hero.module.css'
 import Link from 'next/link'
 
-export default function  Hero () {
+export default function Hero() {
   return (
     <div className={headerStyles.main}>
       <div className={headerStyles.text}>

@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import navStyles from '../styles/Nav.module.css'
+import navStyles from '../styles/nav.module.css'
 import SignIn from './signin.jsx'
 
-const Nav = () => {
+export default function Nav() {
     return (
       <nav className={navStyles.nav}>
         <ul>
@@ -30,5 +30,3 @@ const Nav = () => {
       </nav>
     )
   }
-
-export default Nav
