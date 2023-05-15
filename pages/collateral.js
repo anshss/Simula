@@ -2,8 +2,10 @@ import styles from '../styles/collateral.module.css'
 import { useEffect, useState } from 'react'
 import Moralis from 'moralis'
 import Nav from '../components/Nav'
-import { CollateralContract } from '../address/Collateral.js'
-import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
+// import { CollateralContract } from '../address/Collateral.js'
+// import contractAbi from '../artifacts/contracts/Collateral.sol/Collateral.json'
+import { CollateralContract } from '../config-address'
+import { CollateralAbi } from '../config-abi'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
@@ -15,6 +17,7 @@ import { Card } from '../components/CardCollateral'
 export default function Collateral() {
 
   const contractAddress = CollateralContract
+  const contractAbi = CollateralAbi
 
   const [nfts, setNfts] = useState([])
 
@@ -98,7 +101,7 @@ export default function Collateral() {
     const parseValue = ethers.utils.parseUnits(valueString, 'ether')
     const contract = new ethers.Contract(
       contractAddress,
-      contractAbi.abi,
+      contractAbi,
       signer,
     )
     const txn = await contract.deposit(

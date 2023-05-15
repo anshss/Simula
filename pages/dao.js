@@ -1,7 +1,10 @@
-import { DaoContract } from "../address/Dao.js"; 
-import { LendingContract } from '../address/Lending.js'
 import styles from '../styles/dao.module.css'
-import contractAbi from "../artifacts/contracts/Dao.sol/Dao.json";
+// import { DaoContract } from "../address/Dao.js"; 
+import { DaoContract } from "../config-address.js";
+// import { LendingContract } from '../address/Lending.js'
+import { LendingContract } from "../config-address.js";
+// import contractAbi from "../artifacts/contracts/Dao.sol/Dao.json";
+import { DaoAbi } from "../config-abi.js";
 import web3modal from "web3modal"; 
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
@@ -9,6 +12,8 @@ import Nav from "../components/Nav"
 
 
 export default function Dao() {
+    
+    const contractAbi = DaoAbi
 
     useEffect(() => {
         fetchAllProposal()
@@ -33,7 +38,7 @@ export default function Dao() {
         const connection = await modal.connect()
         const provider = new ethers.providers.Web3Provider(connection) 
         const signer = provider.getSigner()
-        const contract = new ethers.Contract(DaoContract, contractAbi.abi, signer)
+        const contract = new ethers.Contract(DaoContract, contractAbi, signer)
         return contract
     }
 

@@ -2,8 +2,10 @@ import styles from '../styles/collateral.module.css'
 import { useEffect, useState } from 'react'
 import Moralis from 'moralis'
 import Nav from '../components/Nav'
-import { LendingContract } from '../address/Lending.js'
-import contractAbi from '../artifacts/contracts/Lending.sol/Lending.json'
+// import { LendingContract } from '../address/Lending.js'
+import { LendingContract } from '../config-address'
+// import contractAbi from '../artifacts/contracts/Lending.sol/Lending.json'
+import { LendingAbi } from '../config-abi'
 import web3modal from 'web3modal'
 import { ethers } from 'ethers'
 import axios from 'axios'
@@ -15,6 +17,7 @@ import { Card } from '../components/CardLending'
 export default function Lending() {
 
   const contractAddress = LendingContract
+  const contractAbi = LendingAbi
 
   const [nfts, setNfts] = useState([])
 
@@ -98,7 +101,7 @@ export default function Lending() {
     const parseValue = ethers.utils.parseUnits(valueString , 'ether')
     const contract = new ethers.Contract(
       contractAddress,
-      contractAbi.abi,
+      contractAbi,
       signer,
     )
     const txn = await contract.stake(

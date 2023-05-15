@@ -1,9 +1,14 @@
-import { LendingContract } from "../address/Lending.js"
-import { CollateralContract } from "../address/Collateral.js"
-import { CollateralFundsContract } from "../address/CollateralFunds.js"
 import styles from '../styles/dashboard.module.css'; 
-import CollateralContractAbi from "../artifacts/contracts/Collateral.sol/Collateral.json";
-import LendingContractAbi from "../artifacts/contracts/Lending.sol/Lending.json";
+// import { LendingContract } from "../address/Lending.js"
+import { LendingContract } from "../config-address.js";
+// import { CollateralContract } from "../address/Collateral.js"
+import { CollateralContract } from "../config-address.js";
+// import { CollateralFundsContract } from "../address/CollateralFunds.js"
+import { CollateralFundsContract } from "../config-address.js";
+// import CollateralContractAbi from "../artifacts/contracts/Collateral.sol/Collateral.json";
+import { CollateralAbi } from "../config-abi.js";
+// import LendingContractAbi from "../artifacts/contracts/Lending.sol/Lending.json";
+import { LendingAbi } from "../config-abi.js";
 import web3modal from "web3modal"; 
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
@@ -11,6 +16,9 @@ import Nav from "../components/Nav";
 import { useRouter } from 'next/router';
 
 export default function Dashboard() {
+
+    const CollateralContractAbi = CollateralAbi
+    const LendingContractAbi = LendingAbi
 
     const [uri, setUri] = useState({collateral: "", lending: ""})
     const [collateralClaimed, setCollateralClaimed] = useState(false)
@@ -86,7 +94,7 @@ export default function Dashboard() {
     async function fetchCollateralStake() {
         try{
             const signer = await getSignerOrProvider(true)
-            const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, signer)
+            const contract = new ethers.Contract(CollateralContract, CollateralContractAbi, signer)
             const user = await fetchAccount()
             const stake = await contract.userToStake(user)
             const parsedData = {
@@ -109,7 +117,7 @@ export default function Dashboard() {
         const signer = await getSignerOrProvider(true)
         // const provider = new ethers.providers.JsonRpcProvider(`https://stylish-dark-violet.matic-testnet.discover.quiknode.pro/d935f45044efc89c96e437b0774f40b074c7816e/`)
         const provider = await getSignerOrProvider()
-        const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, signer)
+        const contract = new ethers.Contract(CollateralContract, CollateralContractAbi, signer)
         const user = await fetchAccount()
         const gasPrice = await provider.getFeeData();
         const gas = ethers.utils.formatUnits(gasPrice.gasPrice, "wei");
@@ -127,7 +135,7 @@ export default function Dashboard() {
     async function hasClaimedCollateral() {
         try {
             const provider = await getSignerOrProvider()
-            const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, provider)
+            const contract = new ethers.Contract(CollateralContract, CollateralContractAbi, provider)
             const user = await fetchAccount()
             const txn = await contract.hasClaimed(user)
             setCollateralClaimed(txn)
@@ -167,7 +175,7 @@ export default function Dashboard() {
     async function unstakeCollateral() {
         const signer = await getSignerOrProvider(true)
         const tokenContract = new ethers.Contract(tokenAddress, approveAbi, signer)
-        const contract = new ethers.Contract(CollateralContract, CollateralContractAbi.abi, signer)
+        const contract = new ethers.Contract(CollateralContract, CollateralContractAbi, signer)
         // const parseValue = ethers.utils.parseEther("1000");
         const nftValue = await contract.fetchNftValue()
         const approve = await tokenContract.approve(CollateralFundsContract, nftValue)
@@ -211,7 +219,7 @@ export default function Dashboard() {
     async function fetchLendingStake() {
         try{
             const signer = await getSignerOrProvider(true)
-            const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
+            const contract = new ethers.Contract(LendingContract, LendingContractAbi, signer)
             const user = await fetchAccount()
             const stake = await contract.userToStake(user)
             const parsedData = {
@@ -232,7 +240,7 @@ export default function Dashboard() {
 
     async function claimLending() {
         const signer = await getSignerOrProvider(true)
-        const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
+        const contract = new ethers.Contract(LendingContract, LendingContractAbi, signer)
         const txn = await contract.claim()
         await txn.wait()
         setClaimed(true)
@@ -240,7 +248,7 @@ export default function Dashboard() {
 
     async function unstakeLending() {
         const signer = await getSignerOrProvider(true)
-        const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
+        const contract = new ethers.Contract(LendingContract, LendingContractAbi, signer)
         const txn = await contract.unstake()
         await txn.wait()
     }
@@ -248,7 +256,7 @@ export default function Dashboard() {
     async function claimTime() {
         try {
             const signer = await getSignerOrProvider(true)
-            const contract = new ethers.Contract(LendingContract, LendingContractAbi.abi, signer)
+            const contract = new ethers.Contract(LendingContract, LendingContractAbi, signer)
             const txn = await contract.claimTime()
             setLendingClaimed(txn)
         } catch (error) {
