@@ -10,3 +10,38 @@ This platform provides NFT utility. Users can put their NFTs as collateral again
 [Demo Video](https://youtu.be/4od72rInPjM)
 </br>
 [Contract Info](https://github.com/anshss/Simula/blob/main/config-address.js)
+
+<br/>
+
+
+### Built with
+- CSS
+- Next.js
+- Solidity
+- Ether.js
+- Moralis
+- IPFS
+- Chainlink
+
+<br/>
+
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/anshss/Simula.git
+   
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+   
+3. Start project
+   ```sh
+   npm run dev
+   ```
+  
+
+<br/>
