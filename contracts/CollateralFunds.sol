@@ -1,19 +1,17 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-
-
 contract CollateralFunds is Ownable{
 
-    AggregatorV3Interface internal priceFeed;
-
-    constructor() {
+    constructor() Ownable(0x48e6a467852Fa29710AaaCDB275F85db4Fa420eB) {
         priceFeed = AggregatorV3Interface(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada); //  matic/usd
     }
+
+    AggregatorV3Interface internal priceFeed;
 
     function getLatestPrice() public view returns (int) {
         (,int price,,,) = priceFeed.latestRoundData();

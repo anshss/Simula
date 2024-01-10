@@ -1,17 +1,16 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract Dao is Ownable{
+contract Dao is Ownable {
 
-
-    address lendingContract;
-
-    constructor(address _lendingContract) {
+    constructor(address _lendingContract) Ownable(0x48e6a467852Fa29710AaaCDB275F85db4Fa420eB) {
         lendingContract = _lendingContract;
     }
+
+    address lendingContract;
 
     uint256 joinStake = 1 ether;
 
@@ -21,8 +20,12 @@ contract Dao is Ownable{
         uint256 timestamp;
     }
 
-    mapping (address => dao) public daoMember;
+    event joinedDao(address user);
+    event leftDao(address user);
+    event proposalCreated(uint proposalId, address user);
+    event proposalVoted(uint proposalId, address user);
 
+    mapping (address => dao) public daoMember;
 
     struct Proposal {
         address contractAdd;
@@ -47,6 +50,7 @@ contract Dao is Ownable{
     function joinDao() public payable {
         require(msg.value == joinStake, "Stake amount should be equal to as specified");
         daoMember[msg.sender] = dao(msg.sender, true, block.timestamp);
+        emit joinedDao(msg.sender);
     }
 
     function leaveDao() public payable {
@@ -54,6 +58,7 @@ contract Dao is Ownable{
         require(member.timestamp > 4 weeks, "You cannot leave before 1 month");
         payable(member._address).transfer(joinStake);
         delete member;
+        emit leftDao(msg.sender);
     }
 
 
@@ -70,6 +75,7 @@ contract Dao is Ownable{
         proposal.deadline = block.timestamp + 1 days;
         proposal.destination = _destination;
         proposal.description = _description;
+        emit  proposalCreated(numProposal, msg.sender);
         return numProposal;
     }
     
@@ -84,6 +90,7 @@ contract Dao is Ownable{
             proposal.nayVotes;
         }
         proposal.voted[msg.sender] = true;
+        emit proposalVoted(numProposal, msg.sender);
     }
     
     function executeProposal(uint256 proposalId) public onlyDaoMember {

@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
-
 
 interface ICollateralFunds {
     function transferFunds(address user, uint256 amount) external;
@@ -12,12 +11,12 @@ interface ICollateralFunds {
 
 contract Collateral is ERC721Holder {
 
-    ICollateralFunds funds;
-    
     constructor (address _collateralFunds) payable {
         funds = ICollateralFunds(_collateralFunds);
     }
 
+    ICollateralFunds funds;
+    
     uint256 totalDeposits = 0;
     uint256 releaseAmount;
 

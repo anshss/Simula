@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
@@ -10,6 +10,8 @@ contract Lending is ERC721Holder, Ownable {
 
     using Counters for Counters.Counter;
     Counters.Counter private _counter;
+
+    constructor () Ownable(0x48e6a467852Fa29710AaaCDB275F85db4Fa420eB) {}
 
     uint256 totalAmount = 0;
 
